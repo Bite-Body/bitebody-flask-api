@@ -36,7 +36,7 @@ Set-ExecutionPolicy RemoteSigned
 ```
 3. Install pipenv
 ```
-pip install pipenv
+py -m pip install pipenv
 ```
 
 
