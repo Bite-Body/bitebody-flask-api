@@ -21,15 +21,22 @@ def get_all_users():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM ODK1LCc5DZ.Users;")
 
+    all_users = []
+
+    rows = cur.fetchall()
+
+    for row in rows:
+        temp_user = {}
+        temp_user['id'] = row[0]
+        temp_user['first_name'] = row[1]
+        temp_user['last_name'] = row[2]
+        temp_user['email'] = row[3]
+        # temp_user['password'] = row[4] don't send this lol
+        all_users.append(temp_user)
+
     # https://stackoverflow.com/questions/29020839/mysql-fetchall-how-to-get-data-inside-a-dict-rather-than-inside-a-tuple
     # These two lines zips the resulting values with cursor.description
-    # otherwise... you would have to do this manually like this:
-    # rows = cursor.fetchall()
-    # for row in rows:
-    #   id = row['id']
-    #   col1 = row['col1']
-    #   and so on...
-    columns = [col[0] for col in cur.description]
-    rows = [dict(zip(columns, row)) for row in cur.fetchall()]
+    # columns = [col[0] for col in cur.description]
+    # rows = [dict(zip(columns, row)) for row in cur.fetchall()]
 
-    return Response(json.dumps({"users": rows}), mimetype='application/json')
+    return Response(json.dumps({"users": all_users}), mimetype='application/json')
