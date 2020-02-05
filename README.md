@@ -56,5 +56,5 @@ pipenv shell
 ```
 4. Running the API server.
 ```
-python manage.py
+python api\app.py
 ```
