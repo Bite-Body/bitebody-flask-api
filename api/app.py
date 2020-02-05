@@ -1,6 +1,5 @@
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, json, request
 from flask_mysqldb import MySQL
-import json
 
 app = Flask(__name__)
 
@@ -15,7 +14,6 @@ mysql = MySQL(app)
 def hello_world():
     return 'Hello, welcome to api.bitebody.xyz! \nThe following below are our endpoints...'
 
-    
 @app.route('/users/all', methods=['GET'])
 def get_all_users():
     cur = mysql.connection.cursor()
@@ -40,3 +38,31 @@ def get_all_users():
     # rows = [dict(zip(columns, row)) for row in cur.fetchall()]
 
     return Response(json.dumps({"users": all_users}), mimetype='application/json')
+
+@app.route('/users', methods=['POST'])
+def create_user():
+    cur = mysql.connection.cursor()
+
+    print(request.get_json())
+
+    first_name = request.get_json()['first_name']
+    last_name = request.get_json()['last_name']
+    email = request.get_json()['email']
+    password = request.get_json()['password']
+
+    cur.execute("INSERT INTO ODK1LCc5DZ.Users (first_name, last_name, email, password) VALUES ('" 
+        + first_name + "', '" 
+        + last_name + "', '" 
+        + email + "', '" 
+        + password + "');")
+
+    mysql.connection.commit()
+
+    posted = {
+		'first_name' : first_name,
+		'last_name' : last_name,
+		'email' : email,
+		'password' : password
+	}
+    
+    return Response(json.dumps({"posted": posted}), mimetype='application/json')
