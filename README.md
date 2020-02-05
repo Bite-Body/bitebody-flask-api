@@ -34,6 +34,10 @@ python -V
 ```
 Set-ExecutionPolicy RemoteSigned
 ```
+3. Install pipenv
+```
+pip install pipenv
+```
 
 
 ## Running Application
