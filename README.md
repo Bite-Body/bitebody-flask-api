@@ -40,7 +40,7 @@ py -m pip install pipenv
 ```
 
 
-## Running Application
+## Running Application locally
 
 1. Change directory (cd) into the project folder.
 ```
@@ -48,13 +48,32 @@ cd bitebody-flask-api
 ```
 2. Install Python dependencies.
 ```
-pipenv install
+pip install -r requirements.txt
 ```
-3. Run pipenv shell
-```
-pipenv shell
-```
-4. Running the API server.
+3. Running the API server.
 ```
 python manage.py
+```
+
+## Deployment Notes
+
+1. Log into heroku CLI
+```
+heroku login
+```
+2. Login into Heroku containers
+```
+heroku container:login
+```
+3. Heroku push container
+```
+heroku container:push web --app gentle-inlet-25364
+```
+4. Heroku release container
+```
+heroku container:release web --app gentle-inlet-25364
+```
+5. Check logs to verify
+```
+heroku logs --tail
 ```
