@@ -44,10 +44,8 @@ def delete_user(userID):
     try:
         cur = mysql.connection.cursor()
 
-        user_id_2 = request.get_json()['id']
-        print(user_id_2)
 
-        cur.execute("DELETE FROM ODK1LCc5DZ.Users WHERE id = " + str(user_id_2) + ";")
+        cur.execute("DELETE FROM ODK1LCc5DZ.Users WHERE id = " + str(userID) + ";")
         mysql.connection.commit()
 
         deleted = {
