@@ -39,6 +39,26 @@ def get_all_users():
 
     return Response(json.dumps({"users": all_users, "code": 420}), mimetype='application/json')
 
+@app.route('/users/<int:userID>', methods=['DELETE'])
+def delete_user(userID):
+    try:
+        cur = mysql.connection.cursor()
+
+        
+        user_id_2 = request.get_json()['id']
+        print(user_id_2)
+
+        cur.execute("DELETE FROM ODK1LCc5DZ.Users WHERE id = " + str(user_id_2) + ";")
+        mysql.connection.commit()
+
+        deleted = {
+            'id' : userID
+        }
+
+        return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        return {"error": e}
+
 @app.route('/users', methods=['POST'])
 def create_user():
     cur = mysql.connection.cursor()
