@@ -37,7 +37,7 @@ def get_all_users():
     # columns = [col[0] for col in cur.description]
     # rows = [dict(zip(columns, row)) for row in cur.fetchall()]
 
-    return Response(json.dumps({"users": all_users, "code": 420}), mimetype='application/json')
+    return Response(json.dumps({"users": all_users, "code": 200}), mimetype='application/json')
 
 @app.route('/users/<int:userID>', methods=['DELETE'])
 def delete_user(userID):
@@ -85,4 +85,4 @@ def create_user():
 		'password' : password
 	}
     
-    return Response(json.dumps({"posted": posted}), mimetype='application/json')
+    return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
