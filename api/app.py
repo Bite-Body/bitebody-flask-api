@@ -84,3 +84,52 @@ def create_user():
 	}
     
     return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
+
+@app.route('/users/<int:userID>', methods = ['PUT'])
+def update_user_info(userID):
+    try:
+        cur = mysql.connection.cursor()
+        first_name = request.get_json()['first_name']
+        last_name = request.get_json()['last_name']
+        email = request.get_json()['email']
+        password = request.get_json()['password']
+            
+
+        cur.execute("UPDATE ODK1LCc5DZ.Users SET first_name = '"+str(first_name) + "',last_name = '" + str(last_name)+ "',email = '"+ str(email)+"',password = '"+ str(password) + 
+        "'WHERE id = "+ str(userID)+";")
+        mysql.connection.commit()
+        updated = {
+                'first_name':first_name,
+                'last_name':last_name,
+                'email' : email,
+                'password' : password
+            }
+            
+
+        return Response(json.dumps({"updated": updated, "code": 201}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+
+@app.route('/users/<int:userID>', methods=['GET'])
+def find_user(userID):
+    try:
+        cur = mysql.connection.cursor()
+        
+
+        cur.execute("SELECT * FROM ODK1LCc5DZ.Users WHERE id = "+str(userID)+";")
+        row = cur.fetchone()
+        
+        user = {
+                'first_name':row[1],
+                'last_name':row[2],
+                'email' : row[3],
+                'id' : row[0]
+            }
+
+        
+
+        return Response(json.dumps({"user": user, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
