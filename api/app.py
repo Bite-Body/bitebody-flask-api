@@ -54,7 +54,8 @@ def delete_user(userID):
 
         return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"error": e}
+        print(e)
+        return {"error": "yep"}
 
 @app.route('/users', methods=['POST'])
 def create_user():
