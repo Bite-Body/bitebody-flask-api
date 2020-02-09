@@ -44,7 +44,6 @@ def delete_user(userID):
     try:
         cur = mysql.connection.cursor()
 
-        
         user_id_2 = request.get_json()['id']
         print(user_id_2)
 
