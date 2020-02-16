@@ -1,5 +1,6 @@
 from flask import Flask, Response, jsonify, json, request
 from flask_mysqldb import MySQL
+from flask_cors import CORS
 
 app = Flask(__name__)
 
@@ -9,6 +10,8 @@ app.config['MYSQL_PASSWORD'] = 'pN8S7PFHib'
 app.config['MYSQL_DB'] = 'ODK1LCc5DZ'
 
 mysql = MySQL(app)
+
+CORS(app)
 
 @app.route('/')
 def hello_world():
