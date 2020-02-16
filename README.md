@@ -30,14 +30,6 @@ git clone https://github.com/Bite-Body/bitebody-flask-api.git
 ```
 python -V
 ```
-2. If on windows, run powershell as an Administrator, set the execution policy. Type 'Y' after you execute this command.
-```
-Set-ExecutionPolicy RemoteSigned
-```
-3. Install pipenv
-```
-py -m pip install pipenv
-```
 
 
 ## Running Application locally

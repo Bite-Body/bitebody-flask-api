@@ -133,3 +133,125 @@ def find_user(userID):
     except Exception as e:
         print(e)
         return {"error": "yep"}
+
+        ##COLLABORATOR table endpoints
+
+        
+@app.route('/collabs/all', methods=['GET'])
+def get_all_collabs():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM ODK1LCc5DZ.Collaborator;")
+
+    all_collabs = []
+
+    rows = cur.fetchall()
+
+    for row in rows:
+        temp_collab = {}
+        temp_collab['id'] = row[0]
+        temp_collab['youtube_link'] = row[1]
+        #temp_user['last_name'] = row[2]
+       # temp_user['email'] = row[3]
+        # temp_user['password'] = row[4] don't send this lol
+        all_collabs.append(temp_collab)
+
+    # https://stackoverflow.com/questions/29020839/mysql-fetchall-how-to-get-data-inside-a-dict-rather-than-inside-a-tuple
+    # These two lines zips the resulting values with cursor.description
+    # columns = [col[0] for col in cur.description]
+    # rows = [dict(zip(columns, row)) for row in cur.fetchall()]
+
+    return Response(json.dumps({"users": all_collabs, "code": 404}), mimetype='application/json')
+
+
+
+@app.route('/collabs/<int:collabID>', methods=['GET'])
+def find_collaborator(collabID):
+    try:
+        cur = mysql.connection.cursor()
+        
+
+        cur.execute("SELECT * FROM ODK1LCc5DZ.Collaborator WHERE id = "+str(collabID)+";")
+        row = cur.fetchone()
+        
+        collab = {
+                'youtube_link':row[1],
+                'id' : row[0]
+            }
+
+        
+
+        return Response(json.dumps({"collaborator": collab, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+
+
+
+@app.route('/collabs', methods=['POST'])
+def create_collab():
+    cur = mysql.connection.cursor()
+
+    print(request.get_json())
+
+    id = request.get_json()['id']
+    youtube_link = request.get_json()['youtube_link']
+
+    cur.execute("INSERT INTO ODK1LCc5DZ.Collaborator (id, youtube_link) VALUES ('" 
+        + id + "', '" 
+        + youtube_link + "');")
+
+    mysql.connection.commit()
+
+    posted = {
+		'youtube link' : youtube_link,
+		'id' : id
+	}
+    
+    return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
+
+
+@app.route('/collabs/<int:collabID>', methods = ['PUT'])
+def update_collab_info(collabID):
+    try:
+        cur = mysql.connection.cursor()
+        #first_name = request.get_json()['first_name']
+        #last_name = request.get_json()['last_name']
+        #email = request.get_json()['email']
+        #password = request.get_json()['password']
+        youtube_link = request.get_json()['youtube_link']
+            
+
+        cur.execute("UPDATE ODK1LCc5DZ.Collaborator SET youtube_link = '"+str(youtube_link) + 
+        "'WHERE id = "+ str(collabID)+";")
+        mysql.connection.commit()
+        updated = {
+                'youtube_link':youtube_link
+            }
+            
+
+        return Response(json.dumps({"updated": updated, "code": 201}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+
+
+@app.route('/collabs/<int:collabID>', methods=['DELETE'])
+def delete_collab(collabID):
+    try:
+        cur = mysql.connection.cursor()
+
+
+        cur.execute("DELETE FROM ODK1LCc5DZ.Collaborator WHERE id = " + str(collabID) + ";")
+        mysql.connection.commit()
+
+        deleted = {
+            'id' : collabID
+        }
+
+        return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+
+        ##COLLABORATOR table endpoints
+        #David's Contributions WOAH
