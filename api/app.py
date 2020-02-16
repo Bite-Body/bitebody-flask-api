@@ -13,7 +13,7 @@ mysql = MySQL(app)
 @app.route('/')
 def hello_world():
     return 'Hello, welcome to api.bitebody.xyz! \nThe following below are our endpoints...'
-
+#-----------------------USER-METHODS-START----------------------#
 @app.route('/users/all', methods=['GET'])
 def get_all_users():
     cur = mysql.connection.cursor()
@@ -134,9 +134,33 @@ def find_user(userID):
         print(e)
         return {"error": "yep"}
 
+@app.route('/users/login', methods=['POST'])
+def login():
+    try:
+        cur = mysql.connection.cursor()
+        email = request.get_json()['email']
+        password = request.get_json()['password']
+        
+        
+        cur.execute("SELECT * FROM ODK1LCc5DZ.Users where email = '" + str(email) + "'")
+        rv = cur.fetchone()
+        
+        if (rv[4] == password):
+            
+            print("Password Match")
+        else:
+            print("Password not matching")
+        
+        return {"error": "nah"}
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+
+#-----------------------USER-METHODS-END----------------------#
+
         ##COLLABORATOR table endpoints
 
-        
+#---------------------Collaborator-Endpoints-Start---------------------#       
 @app.route('/collabs/all', methods=['GET'])
 def get_all_collabs():
     cur = mysql.connection.cursor()
@@ -255,3 +279,164 @@ def delete_collab(collabID):
 
         ##COLLABORATOR table endpoints
         #David's Contributions WOAH
+#---------------------Collaborator-Endpoints-End---------------------# 
+
+
+#---------------------Workout-Endpoints-Start---------------------# 
+#GET ALL WORKOUTS
+@app.route('/workouts/all', methods = ['GET'])
+def get_all_workouts():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * From ODK1LCc5DZ.Workouts;")
+
+        all_workouts = []
+
+        rows = cur.fetchall()
+
+        for row in rows:
+            temp_workout = {}
+            temp_workout['id'] = row[0]
+            temp_workout['wkout_name'] = row[1] 
+            temp_workout['wkout_description'] = row[2]
+            temp_workout['wkout_image_path'] = row[3]
+            temp_workout['genre'] = row[4]
+            temp_workout['body_part'] = row[5]
+            temp_workout['duration'] = row[6]
+            temp_workout['equipment'] = row[7]
+            all_workouts.append(temp_workout)
+            
+
+        
+            
+
+        return Response(json.dumps({"workouts": all_workouts, "code": 201}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yes"}
+
+#GET SPECIFIC WORKOUTS
+@app.route('/workouts/<int:wkoutID>', methods=['GET'])
+def find_workout(wkoutID):
+    try:
+        cur = mysql.connection.cursor()
+        
+
+        cur.execute("SELECT * FROM ODK1LCc5DZ.Workouts WHERE wkout_ID = "+str(wkoutID)+";")
+        row = cur.fetchone()
+        
+        workout = {
+                'id' : row[0],
+                'Workout_name':row[1],
+                'workout_description':row[2],
+                'workout_image_path' : row[3],
+                'Genre': row[4],
+                'body_part': row[5],
+                'duration': row[6],
+                'equipment': row[7]
+                
+            }
+
+        
+
+        return Response(json.dumps({"workout": workout, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+#ADD A WORKOUT
+@app.route('/workouts', methods=['POST'])
+def insert_workout():
+    cur = mysql.connection.cursor()
+
+    print(request.get_json())
+
+    wkout_ID = request.get_json()['wkout_ID']
+    wkout_name = request.get_json()['wkout_name']
+    wkout_description = request.get_json()['wkout_description']
+    wkout_image_path = request.get_json()['wkout_image_path']
+    genre = request.get_json()['genre']
+    body_part = request.get_json()['body_part']
+    duration = request.get_json()['duration']
+    equipment = request.get_json()['equipment']
+
+    cur.execute("INSERT INTO ODK1LCc5DZ.Workouts (wkout_ID, wkout_name, wkout_description, wkout_image_path, genre, body_part, duration, equipment) VALUES ('" 
+        + wkout_ID + "', '" 
+        + wkout_name + "', '" 
+        + wkout_description + "', '" 
+        + wkout_image_path + "', '"
+        + genre + "', '"  
+        + body_part + "', '" 
+        + duration + "', '" 
+        + equipment + "');")
+
+    mysql.connection.commit()
+
+    workout = { 
+                'wkout_ID': wkout_ID,
+                'wkout_name': wkout_name,
+                'wkout_description': wkout_description,
+                'wkout_image_path' : wkout_image_path,
+                'Genre': genre,
+                'body_part': body_part,
+                'duration': duration,
+                'equipment': equipment
+                
+            }
+    
+    return Response(json.dumps({"workout added": workout, "code": 201}), mimetype='application/json')
+
+#UPDATE A WORKOUT
+@app.route('/workouts/<int:wkoutID>', methods = ['PUT'])
+def update_workout_info(wkoutID):
+    try:
+        cur = mysql.connection.cursor()
+        wkout_name = request.get_json()['wkout_name']
+        wkout_description = request.get_json()['wkout_description']
+        wkout_image_path = request.get_json()['wkout_image_path']
+        genre = request.get_json()['genre']
+        body_part = request.get_json()['body_part']
+        duration = request.get_json()['duration']
+        equipment = request.get_json()['equipment']
+            
+
+        cur.execute("UPDATE ODK1LCc5DZ.Workouts SET wkout_name = '"+str(wkout_name) + "',wkout_description = '" + str(wkout_description)+ "',wkout_image_path = '"+ 
+        str(wkout_image_path)+"',genre = '"+ str(genre) + "',body_part = '" + str(body_part)+"',duration = '" + str(duration)+"',equipment = '" + str(equipment)+
+        "'WHERE wkout_ID = "+ str(wkoutID)+";")
+        mysql.connection.commit()
+        workout = { 
+                'wkout_ID': wkoutID,
+                'wkout_name': wkout_name,
+                'wkout_description': wkout_description,
+                'wkout_image_path' : wkout_image_path,
+                'Genre': genre,
+                'body_part': body_part,
+                'duration': duration,
+                'equipment': equipment
+                
+            }
+            
+
+        return Response(json.dumps({"updated": workout, "code": 201}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+
+#DELETE WORKOUT
+@app.route('/workouts/<int:wkoutID>', methods=['DELETE'])
+def delete_workout(wkoutID):
+    try:
+        cur = mysql.connection.cursor()
+
+
+        cur.execute("DELETE FROM ODK1LCc5DZ.Workouts WHERE wkout_ID = " + str(wkoutID) + ";")
+        mysql.connection.commit()
+
+        deleted = {
+            'id' : wkoutID
+        }
+
+        return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+#---------------------WORKOUTS-ENDPOINTS-END---------------------# 
