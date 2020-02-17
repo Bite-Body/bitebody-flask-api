@@ -1,8 +1,69 @@
-Hello, welcome to api.bitebody.xyz! \nThe following below are our endpoints...
+<!doctype html>
+<html>
+  <body>
+      <head>
+        Hello, welcome to api.bitebody.xyz! \nThe following below are our endpoints...
+      </head>
 
-<br/>
+      <h2>
+        <ul type="1">
+            <li>User</li>
+            <li>Meal</li>
+            <li>Workout</li>
+            <li>Collaborator</li>
+          </ul>  
 
-ENDPOINTS:<br/>
+      </h2>
 
-- GET /users/all
-- ...
+      <ol type="1">
+          <p>Key entities listed above will all have the following functionality</p>
+          <li>GET:
+              <p> 
+                   method is used to retreive data from a server at the specified 
+                   resource(Meal,user,collaborator). 
+             </p>
+             <p>For example, say you have an API with a /users endpoint.
+                 Making a GET request to that endpoint should return a list of all available users.</p>
+          </li>
+        <li>Post:
+
+            <p> 
+                Requests are used to send data to the API sever to create or udpate a resource. 
+                The data sent to the server is stored in the request body of the HTTP request. 
+          </p>
+
+        </li>
+        <li>Put:
+
+            <p> 
+                requests are used to send data to the API to create or update a resource. The difference is that PUT requests are idempotent.
+                 That is, calling the same PUT request multiple times will always produce the same result.
+                 In contrast, calling a POST request repeatedly make have side effects of creating the same resource 
+                 multiple times. 
+          </p>
+
+        </li>
+        <li>Delete:
+
+            <p> 
+                If a new user is created with a POST request to /users, and it can be retrieved with a GET request to /users/{{userid}}, 
+                then making a DELETE request to /users/{{userid}} will completely remove that user.
+          </p>
+        </li>
+      </ol> 
+
+
+
+      <h2>
+        <ul type="1">
+            <li>User Login/Register</li>
+          </ul>
+      </h2>
+      <ol type="1">
+        <li>User Login/Register</li>
+        <p> Additionally users will be able to login if they 
+            already have an account and if not register with our system</p>
+      </ol>
+
+  </body>
+</html>
