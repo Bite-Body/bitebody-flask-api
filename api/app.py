@@ -137,28 +137,6 @@ def find_user(userID):
         print(e)
         return {"error": "yep"}
 
-@app.route('/users/login', methods=['POST'])
-def login():
-    try:
-        cur = mysql.connection.cursor()
-        email = request.get_json()['email']
-        password = request.get_json()['password']
-        
-        
-        cur.execute("SELECT * FROM ODK1LCc5DZ.Users where email = '" + str(email) + "'")
-        rv = cur.fetchone()
-        
-        if (rv[4] == password):
-            
-            print("Password Match")
-        else:
-            print("Password not matching")
-        
-        return {"error": "nah"}
-    except Exception as e:
-        print(e)
-        return {"error": "yep"}
-
 #-----------------------USER-METHODS-END----------------------#
 
         ##COLLABORATOR table endpoints
@@ -185,6 +163,7 @@ def get_all_collabs():
     # rows = [dict(zip(columns, row)) for row in cur.fetchall()]
 
     return Response(json.dumps({"users": all_collabs, "code": 404}), mimetype='application/json')
+
 
 
 
