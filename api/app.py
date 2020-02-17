@@ -443,3 +443,124 @@ def delete_workout(wkoutID):
         print(e)
         return {"error": "yep"}
 #---------------------WORKOUTS-ENDPOINTS-END---------------------# 
+
+
+#---------------------Youtube-Endpoints-Start---------------------# 
+#GET ALL YOUTUBE VIDEOS
+@app.route('/youtube_videos/all', methods = ['GET'])
+def get_all_youtube_videos():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * From ODK1LCc5DZ.Youtube_Videos;")
+
+        all_youtube_videos = []
+
+        rows = cur.fetchall()
+
+        for row in rows:
+            temp_workout = {}
+            temp_workout['video_id'] = row[0]
+            temp_workout['collab_id'] = row[1] 
+            temp_workout['video_count'] = row[2]
+            temp_workout['video_link'] = row[3]
+            all_youtube_videos.append(temp_workout)
+
+        return Response(json.dumps({"youtube_videos": all_youtube_videos, "code": 201}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yes"}
+
+#GET SPECIFIC YOUTUBE VIDEO
+@app.route('/youtube_videos/<int:videoID>', methods=['GET'])
+def find_Youtube_Videos(videoID):
+    try:
+        cur = mysql.connection.cursor()
+
+        cur.execute("SELECT * FROM ODK1LCc5DZ.Youtube_Videos WHERE video_ID = "+str(videoID)+";")
+        row = cur.fetchone()
+        
+        yt_video = {
+            'video_id' : row[0],
+            'collab_id':row[1],
+            'video_count':row[2],
+            'video_link' : row[3]
+        }
+
+        return Response(json.dumps({"youtube_video": yt_video, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+
+#ADD A YOUTUBE VIDEO
+@app.route('/youtube_videos', methods=['POST'])
+def insert_youtube_video():
+    cur = mysql.connection.cursor()
+
+    video_id = request.get_json()['video_id']
+    collab_id = request.get_json()['collab_id']
+    video_count = request.get_json()['video_count']
+    video_link = request.get_json()['video_link']
+
+    cur.execute("INSERT INTO ODK1LCc5DZ.Youtube_Videos (video_ID, collaborator_ID, video_count, video_link) VALUES ('" 
+        + video_id + "', '" 
+        + collab_id + "', '"
+        + video_count + "', '" 
+        + video_link + "');")
+
+    mysql.connection.commit()
+
+    yt_video = { 
+        'video_id': video_id,
+        'collab_id': collab_id,
+        'video_count': video_count,
+        'video_link' : video_link
+    }
+    
+    return Response(json.dumps({"youtube_video": yt_video, "code": 201}), mimetype='application/json')
+
+#UPDATE A YOUTUBE VIDEO
+@app.route('/youtube_videos/<int:videoID>', methods = ['PUT'])
+def update_youtube_video(videoID):
+    try:
+        cur = mysql.connection.cursor()
+
+        video_id = request.get_json()['video_id']
+        collab_id = request.get_json()['collab_id']
+        video_count = request.get_json()['video_count']
+        video_link = request.get_json()['video_link']   
+
+        cur.execute("UPDATE ODK1LCc5DZ.Youtube_Videos SET video_ID = '"+str(video_id) + "',collaborator_ID = '" + str(collab_id)+ "',video_count = '"+ 
+        str(video_count)+"',video_link = '" + str(video_link)+
+        "'WHERE video_ID = "+ str(videoID)+";")
+        mysql.connection.commit()
+
+        yt_video = { 
+            'video_id': video_id,
+            'collab_id': collab_id,
+            'video_count': video_count,
+            'video_link' : video_link
+        } 
+
+        return Response(json.dumps({"updated": yt_video, "code": 201}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+
+#DELETE A YOUTUBE VIDEO
+@app.route('/youtube_videos/<int:videoID>', methods=['DELETE'])
+def delete_youtube_video(videoID):
+    try:
+        cur = mysql.connection.cursor()
+
+        cur.execute("DELETE FROM ODK1LCc5DZ.Youtube_Videos WHERE video_ID = " + str(videoID) + ";")
+        mysql.connection.commit()
+
+        deleted = {
+            'id' : videoID
+        }
+
+        return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yep"}
+#---------------------YOUTUBE VIDEO-ENDPOINTS-END---------------------# 
