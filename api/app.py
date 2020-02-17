@@ -287,27 +287,27 @@ def get_all_workouts():
         cur = mysql.connection.cursor()
         cur.execute("SELECT * From ODK1LCc5DZ.Workouts;")
 
-        all_meals = []
+        all_workouts = []
 
         rows = cur.fetchall()
 
         for row in rows:
-            temp_meals = {}
-            temp_meals['id'] = row[0]
-            temp_meals['wkout_name'] = row[1] 
-            temp_meals['wkout_description'] = row[2]
-            temp_meals['wkout_image_path'] = row[3]
-            temp_meals['genre'] = row[4]
-            temp_meals['body_part'] = row[5]
-            temp_meals['duration'] = row[6]
-            temp_meals['equipment'] = row[7]
-            all_meals.append(temp_meals)
+            temp_workout = {}
+            temp_workout['id'] = row[0]
+            temp_workout['wkout_name'] = row[1] 
+            temp_workout['wkout_description'] = row[2]
+            temp_workout['wkout_image_path'] = row[3]
+            temp_workout['genre'] = row[4]
+            temp_workout['body_part'] = row[5]
+            temp_workout['duration'] = row[6]
+            temp_workout['equipment'] = row[7]
+            all_workouts.append(temp_workout)
             
 
         
             
 
-        return Response(json.dumps({"workouts": all_meals, "code": 201}), mimetype='application/json')
+        return Response(json.dumps({"workouts": all_workouts, "code": 201}), mimetype='application/json')
     except Exception as e:
         print(e)
         return {"error": "yes"}
