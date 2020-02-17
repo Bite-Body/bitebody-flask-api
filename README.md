@@ -28,7 +28,7 @@ git clone https://github.com/Bite-Body/bitebody-flask-api.git
 
 1. Verify you have Python 3.7.x, open up terminal and run the following command.
 ```
-python -V
+python -V 
 ```
 
 
