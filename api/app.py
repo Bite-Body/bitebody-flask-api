@@ -177,9 +177,6 @@ def get_all_collabs():
         temp_collab = {}
         temp_collab['id'] = row[0]
         temp_collab['youtube_link'] = row[1]
-        #temp_user['last_name'] = row[2]
-       # temp_user['email'] = row[3]
-        # temp_user['password'] = row[4] don't send this lol
         all_collabs.append(temp_collab)
 
     # https://stackoverflow.com/questions/29020839/mysql-fetchall-how-to-get-data-inside-a-dict-rather-than-inside-a-tuple
@@ -241,10 +238,7 @@ def create_collab():
 def update_collab_info(collabID):
     try:
         cur = mysql.connection.cursor()
-        #first_name = request.get_json()['first_name']
-        #last_name = request.get_json()['last_name']
-        #email = request.get_json()['email']
-        #password = request.get_json()['password']
+
         youtube_link = request.get_json()['youtube_link']
             
 
