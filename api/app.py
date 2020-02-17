@@ -2,7 +2,7 @@ from flask import Flask, Response, jsonify, json, request
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 app.config['MYSQL_HOST'] = 'remotemysql.com'
 app.config['MYSQL_USER'] = 'ODK1LCc5DZ'
@@ -15,7 +15,8 @@ CORS(app)
 
 @app.route('/')
 def hello_world():
-    return 'Hello, welcome to api.bitebody.xyz! \nThe following below are our endpoints...'
+    return app.send_static_file('index.html')
+
 #-----------------------USER-METHODS-START----------------------#
 @app.route('/users/all', methods=['GET'])
 def get_all_users():
