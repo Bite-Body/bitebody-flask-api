@@ -4,10 +4,10 @@ from flask_cors import CORS
 
 app = Flask(__name__, static_url_path='/static')
 
-app.config['MYSQL_HOST'] = 'remotemysql.com'
-app.config['MYSQL_USER'] = 'ODK1LCc5DZ'
-app.config['MYSQL_PASSWORD'] = 'pN8S7PFHib'
-app.config['MYSQL_DB'] = 'ODK1LCc5DZ'
+app.config['MYSQL_HOST'] = 'mysql-db.ck7dyilntvz9.us-west-1.rds.amazonaws.com'
+app.config['MYSQL_USER'] = 'admin'
+app.config['MYSQL_PASSWORD'] = 'f*ckthisdb69'
+app.config['MYSQL_DB'] = 'BiteBody'
 
 mysql = MySQL(app)
 
@@ -21,7 +21,7 @@ def hello_world():
 @app.route('/users/all', methods=['GET'])
 def get_all_users():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM ODK1LCc5DZ.Users;")
+    cur.execute("SELECT * FROM BiteBody.Users;")
 
     all_users = []
 
@@ -49,7 +49,7 @@ def delete_user(userID):
         cur = mysql.connection.cursor()
 
 
-        cur.execute("DELETE FROM ODK1LCc5DZ.Users WHERE id = " + str(userID) + ";")
+        cur.execute("DELETE FROM BiteBody.Users WHERE id = " + str(userID) + ";")
         mysql.connection.commit()
 
         deleted = {
@@ -72,7 +72,7 @@ def create_user():
     email = request.get_json()['email']
     password = request.get_json()['password']
 
-    cur.execute("INSERT INTO ODK1LCc5DZ.Users (first_name, last_name, email, password) VALUES ('" 
+    cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password) VALUES ('" 
         + first_name + "', '" 
         + last_name + "', '" 
         + email + "', '" 
@@ -99,7 +99,7 @@ def update_user_info(userID):
         password = request.get_json()['password']
             
 
-        cur.execute("UPDATE ODK1LCc5DZ.Users SET first_name = '"+str(first_name) + "',last_name = '" + str(last_name)+ "',email = '"+ str(email)+"',password = '"+ str(password) + 
+        cur.execute("UPDATE BiteBody.Users SET first_name = '"+str(first_name) + "',last_name = '" + str(last_name)+ "',email = '"+ str(email)+"',password = '"+ str(password) + 
         "'WHERE id = "+ str(userID)+";")
         mysql.connection.commit()
         updated = {
@@ -121,7 +121,7 @@ def find_user(userID):
         cur = mysql.connection.cursor()
         
 
-        cur.execute("SELECT * FROM ODK1LCc5DZ.Users WHERE id = "+str(userID)+";")
+        cur.execute("SELECT * FROM BiteBody.Users WHERE id = "+str(userID)+";")
         row = cur.fetchone()
         
         user = {
@@ -146,7 +146,7 @@ def login():
         password = request.get_json()['password']
         
         
-        cur.execute("SELECT * FROM ODK1LCc5DZ.Users where email = '" + str(email) + "'")
+        cur.execute("SELECT * FROM BiteBody.Users where email = '" + str(email) + "'")
         rv = cur.fetchone()
         
         if (rv[4] == password):
@@ -168,7 +168,7 @@ def login():
 @app.route('/collabs/all', methods=['GET'])
 def get_all_collabs():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM ODK1LCc5DZ.Collaborator;")
+    cur.execute("SELECT * FROM BiteBody.Collaborators;")
 
     all_collabs = []
 
@@ -195,7 +195,7 @@ def find_collaborator(collabID):
         cur = mysql.connection.cursor()
         
 
-        cur.execute("SELECT * FROM ODK1LCc5DZ.Collaborator WHERE id = "+str(collabID)+";")
+        cur.execute("SELECT * FROM BiteBody.Collaborators WHERE id = "+str(collabID)+";")
         row = cur.fetchone()
         
         collab = {
@@ -221,7 +221,7 @@ def create_collab():
     id = request.get_json()['id']
     youtube_link = request.get_json()['youtube_link']
 
-    cur.execute("INSERT INTO ODK1LCc5DZ.Collaborator (id, youtube_link) VALUES ('" 
+    cur.execute("INSERT INTO BiteBody.Collaborators (id, youtube_link) VALUES ('" 
         + id + "', '" 
         + youtube_link + "');")
 
@@ -243,7 +243,7 @@ def update_collab_info(collabID):
         youtube_link = request.get_json()['youtube_link']
             
 
-        cur.execute("UPDATE ODK1LCc5DZ.Collaborator SET youtube_link = '"+str(youtube_link) + 
+        cur.execute("UPDATE BiteBody.Collaborators SET youtube_link = '"+str(youtube_link) + 
         "'WHERE id = "+ str(collabID)+";")
         mysql.connection.commit()
         updated = {
@@ -263,7 +263,7 @@ def delete_collab(collabID):
         cur = mysql.connection.cursor()
 
 
-        cur.execute("DELETE FROM ODK1LCc5DZ.Collaborator WHERE id = " + str(collabID) + ";")
+        cur.execute("DELETE FROM BiteBody.Collaborators WHERE id = " + str(collabID) + ";")
         mysql.connection.commit()
 
         deleted = {
@@ -286,7 +286,7 @@ def delete_collab(collabID):
 def get_all_workouts():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * From ODK1LCc5DZ.Workouts;")
+        cur.execute("SELECT * From BiteBody.Workouts;")
 
         all_workouts = []
 
@@ -320,7 +320,7 @@ def find_workout(wkoutID):
         cur = mysql.connection.cursor()
         
 
-        cur.execute("SELECT * FROM ODK1LCc5DZ.Workouts WHERE wkout_ID = "+str(wkoutID)+";")
+        cur.execute("SELECT * FROM BiteBody.Workouts WHERE wkout_ID = "+str(wkoutID)+";")
         row = cur.fetchone()
         
         workout = {
@@ -357,7 +357,7 @@ def insert_workout():
     duration = request.get_json()['duration']
     equipment = request.get_json()['equipment']
 
-    cur.execute("INSERT INTO ODK1LCc5DZ.Workouts (wkout_ID, wkout_name, wkout_description, wkout_image_path, genre, body_part, duration, equipment) VALUES ('" 
+    cur.execute("INSERT INTO BiteBody.Workouts (wkout_ID, wkout_name, wkout_description, wkout_image_path, genre, body_part, duration, equipment) VALUES ('" 
         + wkout_ID + "', '" 
         + wkout_name + "', '" 
         + wkout_description + "', '" 
@@ -397,7 +397,7 @@ def update_workout_info(wkoutID):
         equipment = request.get_json()['equipment']
             
 
-        cur.execute("UPDATE ODK1LCc5DZ.Workouts SET wkout_name = '"+str(wkout_name) + "',wkout_description = '" + str(wkout_description)+ "',wkout_image_path = '"+ 
+        cur.execute("UPDATE BiteBody.Workouts SET wkout_name = '"+str(wkout_name) + "',wkout_description = '" + str(wkout_description)+ "',wkout_image_path = '"+ 
         str(wkout_image_path)+"',genre = '"+ str(genre) + "',body_part = '" + str(body_part)+"',duration = '" + str(duration)+"',equipment = '" + str(equipment)+
         "'WHERE wkout_ID = "+ str(wkoutID)+";")
         mysql.connection.commit()
@@ -426,7 +426,7 @@ def delete_workout(wkoutID):
         cur = mysql.connection.cursor()
 
 
-        cur.execute("DELETE FROM ODK1LCc5DZ.Workouts WHERE wkout_ID = " + str(wkoutID) + ";")
+        cur.execute("DELETE FROM BiteBody.Workouts WHERE wkout_ID = " + str(wkoutID) + ";")
         mysql.connection.commit()
 
         deleted = {
@@ -446,7 +446,7 @@ def delete_workout(wkoutID):
 def get_all_youtube_videos():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * From ODK1LCc5DZ.Youtube_Videos;")
+        cur.execute("SELECT * From BiteBody.Youtube_Videos;")
 
         all_youtube_videos = []
 
@@ -471,7 +471,7 @@ def find_Youtube_Videos(videoID):
     try:
         cur = mysql.connection.cursor()
 
-        cur.execute("SELECT * FROM ODK1LCc5DZ.Youtube_Videos WHERE video_ID = "+str(videoID)+";")
+        cur.execute("SELECT * FROM BiteBody.Youtube_Videos WHERE video_ID = "+str(videoID)+";")
         row = cur.fetchone()
         
         yt_video = {
@@ -496,7 +496,7 @@ def insert_youtube_video():
     video_count = request.get_json()['video_count']
     video_link = request.get_json()['video_link']
 
-    cur.execute("INSERT INTO ODK1LCc5DZ.Youtube_Videos (video_ID, collaborator_ID, video_count, video_link) VALUES ('" 
+    cur.execute("INSERT INTO BiteBody.Youtube_Videos (video_ID, collaborator_ID, video_count, video_link) VALUES ('" 
         + video_id + "', '" 
         + collab_id + "', '"
         + video_count + "', '" 
@@ -524,7 +524,7 @@ def update_youtube_video(videoID):
         video_count = request.get_json()['video_count']
         video_link = request.get_json()['video_link']   
 
-        cur.execute("UPDATE ODK1LCc5DZ.Youtube_Videos SET video_ID = '"+str(video_id) + "',collaborator_ID = '" + str(collab_id)+ "',video_count = '"+ 
+        cur.execute("UPDATE BiteBody.Youtube_Videos SET video_ID = '"+str(video_id) + "',collaborator_ID = '" + str(collab_id)+ "',video_count = '"+ 
         str(video_count)+"',video_link = '" + str(video_link)+
         "'WHERE video_ID = "+ str(videoID)+";")
         mysql.connection.commit()
@@ -547,7 +547,7 @@ def delete_youtube_video(videoID):
     try:
         cur = mysql.connection.cursor()
 
-        cur.execute("DELETE FROM ODK1LCc5DZ.Youtube_Videos WHERE video_ID = " + str(videoID) + ";")
+        cur.execute("DELETE FROM BiteBody.Youtube_Videos WHERE video_ID = " + str(videoID) + ";")
         mysql.connection.commit()
 
         deleted = {
@@ -568,7 +568,7 @@ def delete_youtube_video(videoID):
 def get_all_meals():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM ODK1LCc5DZ.Meals;")
+        cur.execute("SELECT * FROM BiteBody.Meals;")
 
         all_meals = []
 
@@ -603,7 +603,7 @@ def find_meal(meal_ID):
         cur = mysql.connection.cursor()
 
 
-        cur.execute("SELECT * FROM ODK1LCc5DZ.Meals WHERE meal_ID = "+str(meal_ID)+";")
+        cur.execute("SELECT * FROM BiteBody.Meals WHERE meal_ID = "+str(meal_ID)+";")
         row = cur.fetchone()
 
         meal = {
@@ -642,7 +642,7 @@ def insert_meal():
     ingredients = request.get_json()['ingredients']
     preptime = request.get_json()['preptime']
 
-    cur.execute("INSERT INTO ODK1LCc5DZ.Meals (meal_ID, meal_name, calories, protein, fat, carbs, ingredients, preptime) VALUES ('" 
+    cur.execute("INSERT INTO BiteBody.Meals (meal_ID, meal_name, calories, protein, fat, carbs, ingredients, preptime) VALUES ('" 
         + meal_ID + "', '" 
         + meal_name + "', '" 
         + calories + "', '" 
@@ -682,7 +682,7 @@ def update_meal_info(meal_ID):
         preptime = request.get_json()['preptime']
 
 
-        cur.execute("UPDATE ODK1LCc5DZ.Meals SET meal_name = '"+str(meal_name) + "',calories = '" + str(calories)+ "',protein = '"+ 
+        cur.execute("UPDATE BiteBody.Meals SET meal_name = '"+str(meal_name) + "',calories = '" + str(calories)+ "',protein = '"+ 
         str(protein)+"',fat = '"+ str(fat) + "',carbs = '" + str(carbs)+"',ingredients = '" + str(ingredients)+"',preptime = '" + str(preptime)+
         "'WHERE meal_ID = "+ str(meal_ID)+";")
         mysql.connection.commit()
@@ -712,7 +712,7 @@ def delete_meal(meal_ID):
         cur = mysql.connection.cursor()
 
 
-        cur.execute("DELETE FROM ODK1LCc5DZ.Meals WHERE meal_ID = " + str(meal_ID) + ";")
+        cur.execute("DELETE FROM BiteBody.Meals WHERE meal_ID = " + str(meal_ID) + ";")
         mysql.connection.commit()
 
         deleted = {
@@ -742,7 +742,7 @@ def register():
     email = request.get_json()['email']
     password = request.get_json()['password']
 
-    cur.execute("INSERT INTO ODK1LCc5DZ.Users (first_name, last_name, email, password) VALUES ('" 
+    cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password) VALUES ('" 
         + first_name + "', '" 
         + last_name + "', '" 
         + email + "', '" 
