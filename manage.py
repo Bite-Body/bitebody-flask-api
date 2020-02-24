@@ -1,6 +1,34 @@
-from api.app import app
+from flask import Flask
+from flask_mysqldb import MySQL
+from flask_cors import CORS
 import os
 
+mysql = MySQL()
+
+from api.home import home
+from api.user import user
+from api.collab import collab
+from api.workout import workout
+from api.youtube_video import youtube_video
+from api.meal import meal
+
 if __name__ == '__main__':
+    app = Flask(__name__)
+
+    app.config['MYSQL_HOST'] = 'mysql-db.ck7dyilntvz9.us-west-1.rds.amazonaws.com'
+    app.config['MYSQL_USER'] = 'admin'
+    app.config['MYSQL_PASSWORD'] = 'f*ckthisdb69'
+    app.config['MYSQL_DB'] = 'BiteBody'
+
+    mysql.init_app(app)
+    CORS(app)
+
+    app.register_blueprint(home, url_prefix="/")
+    app.register_blueprint(user, url_prefix="/users")
+    app.register_blueprint(collab, url_prefix="/collabs")
+    app.register_blueprint(workout, url_prefix="/workouts")
+    app.register_blueprint(youtube_video, url_prefix="/youtube_videos")
+    app.register_blueprint(meal, url_prefix="/meals")
+
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
