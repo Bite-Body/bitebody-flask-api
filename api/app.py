@@ -70,7 +70,14 @@ def create_user():
     first_name = request.get_json()['first_name']
     last_name = request.get_json()['last_name']
     email = request.get_json()['email']
+    while((email.find('@') == -1)):
+        print('Inavalid email please enter again?\n')
+        email = input('Inavalid email please enter again?\n')
+
     password = request.get_json()['password']
+    while (len(password) < 7):
+        print('password is too weak please add more characters')
+        password = input('Enter new password\n')
 
     cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password) VALUES ('" 
         + first_name + "', '" 
@@ -145,6 +152,10 @@ def login():
         email = request.get_json()['email']
         password = request.get_json()['password']
         
+        
+        while((email.find('@') == -1)):
+            print('Inavalid email please enter again?\n')
+            email = input('Inavalid email please enter again?\n')
         
         cur.execute("SELECT * FROM BiteBody.Users where email = '" + str(email) + "'")
         rv = cur.fetchone()
@@ -603,7 +614,7 @@ def find_meal(meal_ID):
         cur = mysql.connection.cursor()
 
 
-        cur.execute("SELECT * FROM BiteBody.Meals WHERE meal_ID = "+str(meal_ID)+";")
+        cur.execute("SELECT * FROM BiteBody.Meals WHERE id = "+str(meal_ID)+";")
         row = cur.fetchone()
 
         meal = {
@@ -672,6 +683,7 @@ def insert_meal():
 @app.route('/workouts/<int:meal_ID>', methods = ['PUT'])
 def update_meal_info(meal_ID):
     try:
+        cur = mysql.connection.cursor()
         meal_ID = request.get_json()['meal_ID']
         meal_name = request.get_json()['meal_name']
         calories = request.get_json()['calories']
@@ -761,3 +773,70 @@ def register():
 
 
 #---------------------USER LOGIN/REGISTER-ENDPOINTS-END---------------------#
+
+#---------------------Calorie calc -ENDPOINTS-START---------------------#
+
+#-----------currently not accurate and needs revisions-------------#
+
+@app.route('/calorie', methods=['POST'])
+def calorie_calc():
+    try:
+        def user_info():
+            age = int(input('What is your age: '))
+            gender = input('What is your gender: ')
+            weight = int(input('What is your weight: '))
+            height = int(input('What is your height in inches: '))
+
+            if gender == 'male':
+                c1 = 66
+                hm = 5 * height
+                wm = 12.7 * weight
+                am = 6.7 * age
+            elif gender == 'female':
+                c1 = 655
+                hm = 2 * height
+                wm = 9.5 * weight
+                am = 4.7 * age
+
+            #BMR = Basal Metabolic Rate Formulas
+            bmr_result = c1 + hm + wm - am
+            return(int(bmr_result))
+
+        def calculate_activity(bmr_result): 
+            activity_level = input('What is your activity level (none, light, moderate, or high): ')
+
+            if activity_level == 'none':
+                activity_level = 1.2 * bmr_result
+            elif activity_level == 'light':
+                activity_level = 1.375 * bmr_result
+            elif activity_level == 'moderate':
+                activity_level = 1.55 * bmr_result
+            elif activity_level == 'high':
+                activity_level = 1.725 * bmr_result
+            
+            return(int(activity_level))
+
+        def gain_or_lose(activity_level):
+            goals = input('Do you want to lose, maintain, or gain weight: ')
+
+            if goals == 'lose':
+                calories = activity_level - 500
+            elif goals == 'maintain':
+                calories = activity_level
+            elif goals == 'gain':
+                gain = int(input('Gain 1 or 2 pounds per week? Enter 1 or 2: '))
+                if gain == 1: 
+                    calories = activity_level + 500
+                elif gain == 2:
+                    calories = activity_level + 1000
+
+            print('in order to ', goals, 'weight, your daily caloric goals should be', int(calories), '!')
+
+
+        
+        return Response(json.dumps({"Daily calorie to consume": gain_or_lose(calculate_activity(user_info())), "code": 200}), mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return {"error": "yes"}
+
+    #---------------------Calorie calc -ENDPOINTS-END---------------------#
