@@ -2,12 +2,85 @@
 
 <!-- include ccs file with <stylesheet>-->
 <html>
-  <body>
-      <head>
-        Hello, welcome to api.bitebody.xyz! \nThe following below are our endpoints...
-      </head>
 
-      <h2>
+  <style type="text/css">
+    .title {
+        color: black;
+        text-decoration: bold, underline;
+        
+    }
+
+    .pizza {
+        color: gray;
+    }
+
+    .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .button2 {
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .button3 {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .button4 {
+    background-color: purple;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .button5 {
+    background-color: orange;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: auto;
+  }
+
+  
+
+
+    </style>
+
+  <body>
+      <h1>
+        Hello, welcome to api.bitebody.xyz! \nThe following below are our endpoints...
+      </h1>
+
+      <h2 class="title">
         <ul type="1">
             <li>User</li>
             <li>Meal</li>
@@ -19,7 +92,7 @@
 
       <ol type="1">
           <p>Key entities listed above will all have the following functionality</p>
-          <li>GET:
+          <li class ="button" >GET:
               <p> 
                    method is used to retreive data from a server at the specified 
                    resource(Meal,user,collaborator). 
@@ -27,7 +100,7 @@
              <p>For example, say you have an API with a /users endpoint.
                  Making a GET request to that endpoint should return a list of all available users.</p>
           </li>
-        <li>Post:
+        <li class ="button2">Post:
 
             <p> 
                 Requests are used to send data to the API sever to create or udpate a resource. 
@@ -35,7 +108,7 @@
           </p>
 
         </li>
-        <li>Put:
+        <li class ="button4" >Put:
 
             <p> 
                 requests are used to send data to the API to create or update a resource. The difference is that PUT requests are idempotent.
@@ -45,7 +118,7 @@
           </p>
 
         </li>
-        <li>Delete:
+        <li class ="button3" >Delete:
 
             <p> 
                 If a new user is created with a POST request to /users, and it can be retrieved with a GET request to /users/{{userid}}, 
@@ -61,7 +134,7 @@
             <li>User Login/Register</li>
           </ul>
       </h2>
-      <ol type="1">
+      <ol class ="button5" type="1">
         <li>User Login/Register</li>
         <p> Additionally users will be able to login if they 
             already have an account and if not register with our system</p>
