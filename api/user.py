@@ -69,8 +69,10 @@ def update_user_info(userID):
             'email' : email,
             'password' : password
         }
+        
         return Response(json.dumps({"updated": updated, "code": 201}), mimetype='application/json')
     except Exception as e:
+        print(e)
         return {"Error": "Unable to update this user."}
 
 @user.route('', methods=['POST'])
