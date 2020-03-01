@@ -22,13 +22,6 @@ if __name__ == '__main__':
     app.config['MYSQL_PASSWORD'] = 'f*ckthisdb69'
     app.config['MYSQL_DB'] = 'BiteBody'
 
-    #app.config['MYSQL_HOST'] = 'remote.mysql.com'
-    #app.config['MYSQL_USER'] = 'ODK1LCc5DZ'
-    #app.config['MYSQL_PASSWORD'] = 'pN8S7PFHib'
-    #app.config['MYSQL_DB'] = 'ODK1LCc5DZ'
-
-
-
     mysql.init_app(app)
     CORS(app)
 
