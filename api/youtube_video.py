@@ -57,13 +57,13 @@ def delete_youtube_video(videoID):
 def update_youtube_video(videoID):
     try:
         cur = mysql.connection.cursor()
-        id = request.get_json()['id']
+        #id = request.get_json()['id']
         id_collaborator = request.get_json()['id_collaborator']
         video_count = request.get_json()['video_count']
         video_link = request.get_json()['video_link']   
-        cur.execute("UPDATE BiteBody.Youtube_Videos SET video_ID = '"+str(id) + "',collaborator_ID = '" + str(id_collaborator)+ "',video_count = '"+ 
+        cur.execute("UPDATE BiteBody.Youtube_Videos SET id = '"+str(videoID) + "',id_collaborator = '" + str(id_collaborator)+ "',video_count = '"+ 
         str(video_count)+"',video_link = '" + str(video_link)+
-        "'WHERE video_ID = "+ str(videoID)+";")
+        "'WHERE id = "+ str(videoID)+";")
         mysql.connection.commit()
         yt_video = { 
             'id': videoID,

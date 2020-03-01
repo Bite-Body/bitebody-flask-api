@@ -73,7 +73,7 @@ def update_workout_info(wkoutID):
         duration = request.get_json()['duration']
         equipment = request.get_json()['equipment']
             
-        cur.execute("UPDATE BiteBody.Workouts SET wkout_name = '"+str(workout_name) + "',workout_description = '" + str(workout_description)+ "',workout_image_path = '"+ 
+        cur.execute("UPDATE BiteBody.Workouts SET workout_name = '"+str(workout_name) + "',workout_description = '" + str(workout_description)+ "',workout_image_path = '"+ 
         str(workout_image_path)+"',genre = '"+ str(genre) + "',body_part = '" + str(body_part)+"',duration = '" + str(duration)+"',equipment = '" + str(equipment)+
         "'WHERE id = "+ str(wkoutID)+";")
         mysql.connection.commit()
