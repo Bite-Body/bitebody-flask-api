@@ -16,10 +16,10 @@ from api.calorie_calc import calorie_calc
 if __name__ == '__main__':
     app = Flask(__name__)
 
-    app.config['MYSQL_HOST'] = 'mysql-db.ck7dyilntvz9.us-west-1.rds.amazonaws.com'
-    app.config['MYSQL_USER'] = 'admin'
-    app.config['MYSQL_PASSWORD'] = 'f*ckthisdb69'
-    app.config['MYSQL_DB'] = 'BiteBody'
+    app.config['MYSQL_HOST'] = os.getenv('AWS_DB_HOST')
+    app.config['MYSQL_USER'] = os.getenv('AWS_DB_USERNAME')
+    app.config['MYSQL_PASSWORD'] = os.getenv('AWS_DB_PASSWORD')
+    app.config['MYSQL_DB'] = os.getenv('AWS_DB_DEFAULT')
 
     mysql.init_app(app)
     CORS(app)
