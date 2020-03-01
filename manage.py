@@ -12,7 +12,6 @@ from api.workout import workout
 from api.youtube_video import youtube_video
 from api.meal import meal
 from api.calorie_calc import calorie_calc
-from api.osenv import osenv
 
 if __name__ == '__main__':
     app = Flask(__name__)
@@ -32,7 +31,6 @@ if __name__ == '__main__':
     app.register_blueprint(youtube_video, url_prefix="/youtube_videos")
     app.register_blueprint(meal, url_prefix="/meals")
     app.register_blueprint(calorie_calc, url_prefix="/calories")
-    app.register_blueprint(osenv, url_prefix="/osenv")
 
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
