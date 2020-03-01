@@ -6,7 +6,6 @@ import json
 #import jfile from 'api/user_Post.json'
 #import hector from '../../static/images/HectorBB.png'
 
-
 def GetAll():
     url = "http://localhost:5000/collabs/all"
 
@@ -52,38 +51,6 @@ def Delete(userNum): #Confirmation Code given despite attempting delete on null 
 
 def Post():
     url = "http://localhost:5000/collabs"
-
-    #MISCELLANEOUS WORK TOWARDS BUG FIXING AND OTHER API TESTING
-
-    #file = open('C:\\Users\\idavi\\bitebody-flask-api\\api\\user_Post.json', 'r')
-    #json_input = file.read()
-    #request_json = json.loads(json_input)#parses string back into json format
-    #print(request_json)
-    #response = requests.post(url,data = {"first_name" : "TestFN", "last_name": "TestLN", "email": "TestEmail@Gmail.com" ,"password": "TestPassword"})
-    #response = requests.post(url,data = {"name": "Testing WOrld", "job": "Trainer"})
-    #print(response.text)
-   
-    #METHOD 1 -- FAULTY
-    #url = "http://localhost:5000/users"
-    #response = requests.post(url,data = {"first_name" : "TestFN", "last_name": "TestLN", "email": "TestEmail@Gmail.com" ,"password": "TestPassword"})
-    #print(response.text)
-
-    ##METHOD 2 -- FAULTY
-    #file = open('C:\\Users\\idavi\\bitebody-flask-api\\api\\user_Post.json', 'r')
-    #json_input = file.read()
-    #request_json = json.loads(json_input)#parses string back into json format
-    #response = requests.post(url,request_json)
-    #print(request_json)
-    #print(response.text)
-
-    ##METHOD 3 -- FAULTY
-    #with open('C:\\Users\\idavi\\bitebody-flask-api\\api\\user_Post.json') as json_file:
-        #data = json.load(json_file)
-        #print(data)
-        #response = requests.post(url,data)
-        #print(response.text)
-
-    ##METHOD 4 -- ACTUALLY WORKS (THANK THE LORD)
     payload = {"id" : "50","youtube_link":"www.youtube.com/test"}
     r = requests.post(url, json=payload)
     print(r)
@@ -120,4 +87,3 @@ Delete("50")
 Post()
 Put("50")
 print(pc , "/5 tests passed")
-
