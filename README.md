@@ -71,6 +71,8 @@ heroku logs --tail
 ```
 ## Testing API endpoints through Python Files
 
+Before going through with the steps outlined below, please have a local instance of the application running. Documentation for running locally can be found above in the "Running Application Locally" section of the README. :)
+
 Each of the tables stored in the database can have the API's CRUD operations tested through the command line.
 
 A) To test the USER table follow the following instructions:
@@ -87,4 +89,68 @@ cd tests
 4. run user_Test file
 ```
 python user_Test.py
+```
+
+B) To test the COLLABORATOR table follow the following instructions:
+
+1. Open the Command Prompt on your machine.
+2. Change directory to backend
+```
+cd bitebody-flask-api
+```
+3. change directory to test folder (where test files are housed)
+```
+cd tests
+```
+4. run user_Test file
+```
+python collab_Test.py
+```
+
+C) To test the YOUTUBE VIDEOS table follow the following instructions:
+
+1. Open the Command Prompt on your machine.
+2. Change directory to backend
+```
+cd bitebody-flask-api
+```
+3. change directory to test folder (where test files are housed)
+```
+cd tests
+```
+4. run youtube_video_test file
+```
+python youtube_video_Test.py
+```
+
+D) To test the MEAL table follow the following instructions:
+
+1. Open the Command Prompt on your machine.
+2. Change directory to backend
+```
+cd bitebody-flask-api
+```
+3. change directory to test folder (where test files are housed)
+```
+cd tests
+```
+4. run meal_test file
+```
+python meal_Test.py
+```
+
+E) To test the WORKOUT table follow the following instructions:
+
+1. Open the Command Prompt on your machine.
+2. Change directory to backend
+```
+cd bitebody-flask-api
+```
+3. change directory to test folder (where test files are housed)
+```
+cd tests
+```
+4. run meal_test file
+```
+python workout_Test.py
 ```
