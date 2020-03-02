@@ -69,3 +69,22 @@ heroku container:release web --app gentle-inlet-25364
 ```
 heroku logs --tail
 ```
+## Testing API endpoints through Python Files
+
+Each of the tables stored in the database can have the API's CRUD operations tested through the command line.
+
+A) To test the USER table follow the following instructions:
+
+1. Open the Command Prompt on your machine.
+2. Change directory to backend
+```
+cd bitebody-flask-api
+```
+3. change directory to test folder (where test files are housed)
+```
+cd tests
+```
+4. run user_Test file
+```
+python user_Test.py
+```
