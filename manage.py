@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_mysqldb import MySQL
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt
 import os
 
 mysql = MySQL()
+bcrypt = Bcrypt()
 
 from api.home import home
 from api.user import user
@@ -12,6 +14,7 @@ from api.workout import workout
 from api.youtube_video import youtube_video
 from api.meal import meal
 from api.calorie_calc import calorie_calc
+
 
 if __name__ == '__main__':
     app = Flask(__name__)
@@ -22,7 +25,9 @@ if __name__ == '__main__':
     app.config['MYSQL_DB'] = os.getenv('AWS_DB_DEFAULT')
 
     mysql.init_app(app)
+    bcrypt.init_app(app)
     CORS(app)
+    
 
     app.register_blueprint(home, url_prefix="/")
     app.register_blueprint(user, url_prefix="/users")

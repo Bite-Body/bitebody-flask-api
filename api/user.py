@@ -4,6 +4,7 @@ from flask_mysqldb import MySQL
 user = Blueprint("user", __name__)
 
 from manage import mysql as mysql
+from manage import bcrypt as bcrypt
 
 @user.route('/all', methods=['GET'])
 def get_all_users():
@@ -82,7 +83,7 @@ def create_user():
         first_name = request.get_json()['first_name']
         last_name = request.get_json()['last_name']
         email = request.get_json()['email']
-        password = request.get_json()['password']
+        password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
         cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password) VALUES ('" 
             + first_name + "', '" 
             + last_name + "', '" 
@@ -97,6 +98,7 @@ def create_user():
         }
         return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
     except Exception as e:
+        print(e)
         return {"Error": "Unable to create this user."}
 
 @user.route('/login', methods=['POST'])
@@ -107,13 +109,19 @@ def login():
         password = request.get_json()['password']
         cur.execute("SELECT * FROM BiteBody.Users where email = '" + str(email) + "'")
         rv = cur.fetchone()
-        if (rv[4] == password):
-            print("Password Match")
+        result = {}
+        print(rv[4])
+        print(password)
+
+        if bcrypt.check_password_hash(rv[4], password):
+            print("Passwords Match!")
         else:
             raise Exception('Passwords do not match')
         
         return {"Allow": "yes"}
+
     except Exception as e:
+        print (e)
         return {
             "Error": "Incorrect email or password.",
             "Allow": "no"
