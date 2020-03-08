@@ -99,7 +99,7 @@ def create_user():
         return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
     except Exception as e:
         print(e)
-        return {"Error": "Unable to create this user."}
+        return {"Error": "Unable to create this user.", "code": 400}
 
 @user.route('/login', methods=['POST'])
 def login():
