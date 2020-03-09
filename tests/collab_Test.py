@@ -43,7 +43,7 @@ def GetSingle(userNum):
         print("GET SINGLE Failed")
 
 def Delete(): #Confirmation Code given despite attempting delete on null row. Figure out Fix
-
+    userNum = getMinID()
     url = "https://gentle-inlet-25364.herokuapp.com/collabs/" + userNum
 
     res = requests.delete(url)
