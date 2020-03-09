@@ -1,7 +1,13 @@
+from flask import Blueprint, Response, json, request
+from flask_mysqldb import MySQL
+
+collab = Blueprint("collab", __name__)
+
+from manage import mysql
 import requests
-import request
+from 'api\collab.py' import getMinID
 import pprint
-import json
+
 
 #import jfile from 'api/user_Post.json'
 #import hector from '../../static/images/HectorBB.png'
@@ -36,7 +42,8 @@ def GetSingle(userNum):
     else:
         print("GET SINGLE Failed")
 
-def Delete(userNum): #Confirmation Code given despite attempting delete on null row. Figure out Fix
+def Delete(): #Confirmation Code given despite attempting delete on null row. Figure out Fix
+
     url = "https://gentle-inlet-25364.herokuapp.com/collabs/" + userNum
 
     res = requests.delete(url)
@@ -83,7 +90,7 @@ def Put(userNum):
 pc = 0
 GetAll()
 GetSingle("1")
-Delete("50")
+Delete()
 Post()
 Put("50")
 print(pc , "/5 tests passed")
