@@ -44,7 +44,7 @@ def find_user(userID):
 def delete_user(userID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT id FROM Bitebody.Users Where id = " +str(userID) +  ";")
+        cur.execute("SELECT id FROM BiteBody.Users Where id = " +str(userID) +  ";")
         row = cur.fetchone()
         foundID = row[0]
         if foundID == None:
