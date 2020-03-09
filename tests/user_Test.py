@@ -8,7 +8,7 @@ import json
 
 
 def GetAll():
-    url = "http://localhost:5000/users/all"
+    url = "https://gentle-inlet-25364.herokuapp.com/users/all"
 
     response = requests.get(url)
 
@@ -24,7 +24,7 @@ def GetAll():
     #pprint.pprint (response.headers)
 
 def GetSingle(userNum):
-    url = "http://localhost:5000/users/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/users/" + userNum
 
     res = requests.get(url)
     pprint.pprint (res.content)
@@ -38,7 +38,7 @@ def GetSingle(userNum):
         print("GET SINGLE Failed")
 
 def Delete(userNum): #Confirmation Code given despite attempting delete on null row. Figure out Fix
-    url = "http://localhost:5000/users/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/users/" + userNum
 
     res = requests.delete(url)
     pprint.pprint (res.content)
@@ -52,7 +52,7 @@ def Delete(userNum): #Confirmation Code given despite attempting delete on null 
 
 def Post():
     #url = "https://reqres.in/api/users"
-    url = "http://localhost:5000/users"
+    url = "https://gentle-inlet-25364.herokuapp.com/users"
 
     #MISCELLANEOUS WORK TOWARDS BUG FIXING AND OTHER API TESTING
 
@@ -99,7 +99,7 @@ def Post():
 
 
 def Put(userNum):
-    url = "http://localhost:5000/users/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/users/" + userNum
     payload = {"first_name" : "UpdatedFN", "last_name": "UpdatedLN", "email": "UpdatedEmail@Gmail.com" ,"password": "UpdatedPassword"}
     r = requests.put(url, json=payload)
     print(r)
@@ -113,7 +113,7 @@ def Put(userNum):
         print("PUT Failed")
 
 def PostLogin():
-    url = "http://localhost:5000/users/login"
+    url = "https://gentle-inlet-25364.herokuapp.com/users/login"
     payload = {"email": "TestEmail@Gmail.com", "password": "TestPassword"}
     r = requests.post(url, json = payload)
     print(r)

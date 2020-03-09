@@ -79,4 +79,4 @@ def create_collab():
         }
         return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to create this collaborator."}
+        return {"Error": "Unable to create this collaborator.", "error message": str(e)}
