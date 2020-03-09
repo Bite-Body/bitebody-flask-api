@@ -44,12 +44,18 @@ def find_user(userID):
 def delete_user(userID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM BiteBody.Users WHERE id = " + str(userID) + ";")
-        mysql.connection.commit()
-        deleted = {
-            'id' : userID 
-        }
-        return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
+        cur.execute("SELECT id FROM Bitebody.Users Where id = " +str(userID) +  ";")
+        row = cur.fetchone()
+        foundID = row[0]
+        if foundID == None:
+            return {"NOT FOUND":"User want to delete doesn't exist"}
+        else:
+            cur.execute("DELETE FROM BiteBody.Users WHERE id = " + str(userID) + ";")
+            mysql.connection.commit()
+            deleted = {
+                'id' : userID 
+            }
+            return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to delete this user."}
 

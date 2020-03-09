@@ -69,14 +69,21 @@ def create_collab():
         cur = mysql.connection.cursor()
         id = request.get_json()['id']
         youtube_link = request.get_json()['youtube_link']
-        cur.execute("INSERT INTO BiteBody.Collaborators (id, youtube_link) VALUES ('" 
-            + id + "', '" 
-            + youtube_link + "');")
-        mysql.connection.commit()
-        posted = {
-            'youtube link' : youtube_link,
-            'id' : id
-        }
+
+        cur.execute("SELECT id FROM Bitebody.Users Where id = " +str(id) +  ";")
+        row = cur.fetchone()
+        foundID = row[0]
+        if foundID == None:
+            return {"NOT FOUND":"Can't create Collab if given ID does not exist in USER table"}
+        else:
+            cur.execute("INSERT INTO BiteBody.Collaborators (id, youtube_link) VALUES ('" 
+                + id + "', '" 
+                + youtube_link + "');")
+            mysql.connection.commit()
+            posted = {
+                'youtube link' : youtube_link,
+                'id' : id
+            }
         return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to create this collaborator.", "error message": str(e)}

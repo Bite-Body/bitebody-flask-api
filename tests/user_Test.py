@@ -131,9 +131,9 @@ def PostLogin():
 pc = 0
 GetAll()
 GetSingle("1")
-Delete("42")
 Post()
-Put("42")
+Delete("1")
+Put("1")
 PostLogin()
 print(pc , "/6 tests passed")
 
