@@ -90,9 +90,7 @@ def create_user():
         last_name = request.get_json()['last_name']
         email = request.get_json()['email']
 
-        fixed_email = email[:email.find("@")] + "\"" + email[email.find("@"):]
-
-        cur.execute("SELECT email FROM BiteBody.Users WHERE email = " + fixed_email +";")
+        cur.execute("SELECT email FROM BiteBody.Users WHERE email = '" + email +"';")
         emailFound = cur.fetchone()
         print("Email Found value: "+ emailFound)
         if(emailFound):
