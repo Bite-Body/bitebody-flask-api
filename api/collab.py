@@ -70,7 +70,7 @@ def create_collab():
         id = request.get_json()['id']
         youtube_link = request.get_json()['youtube_link']
 
-        cur.execute("SELECT id FROM Bitebody.Users Where id = " +str(id) +  ";")
+        cur.execute("SELECT id FROM BiteBody.Users Where id = " +str(id) +  ";")
         row = cur.fetchone()
         foundID = row[0]
         print("row: ", row)
