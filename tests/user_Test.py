@@ -16,9 +16,9 @@ def GetAll():
 
     if "code" in response.text:
         print("GET ALL Passed")
-        global pc
-        pc =  pc + 1
-        return pc
+        global userPC
+        userPC =  userPC + 1
+        return userPC
     else:
         print("GET ALL Failed")
     #pprint.pprint (response.headers)
@@ -31,9 +31,9 @@ def GetSingle(userNum):
 
     if "code" in res.text:
         print("GET SINGLE Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global userPC
+        userPC = userPC + 1
+        return userPC
     else:
         print("GET SINGLE Failed")
 
@@ -44,9 +44,9 @@ def Delete(userNum): #Confirmation Code given despite attempting delete on null 
     pprint.pprint (res.content)
     if "code" in res.text:
         print("DELETE Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global userPC
+        userPC = userPC + 1
+        return userPC
     else:
         print("DELETE Failed")
 
@@ -91,9 +91,9 @@ def Post():
     print(r.text)
     if "code" in r.text:
         print("POST Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global userPC
+        userPC = userPC + 1
+        return userPC
     else:
         print("POST Failed")
 
@@ -106,9 +106,9 @@ def Put(userNum):
     print(r.text)
     if "code" in r.text:
         print("PUT Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global userPC
+        userPC = userPC + 1
+        return userPC
     else:
         print("PUT Failed")
 
@@ -120,20 +120,12 @@ def PostLogin():
     print(r.text)
     if "yes" in r.text:
         print("POSTLOGIN Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global userPC
+        userPC = userPC + 1
+        return userPC
     else:
         print("POSTLOGIN Failed")
     
+userPC = 0
 
-
-pc = 0
-GetAll()
-GetSingle("1")
-Post()
-Delete("1")
-Put("1")
-PostLogin()
-print(pc , "/6 tests passed")
 

@@ -57,7 +57,7 @@ def delete_user(userID):
             }
             return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to delete this user."}
+        return {"Error": "Unable to delete this user.", "Message": str(e)}
 
 @user.route('/<int:userID>', methods = ['PUT'])
 def update_user_info(userID):
