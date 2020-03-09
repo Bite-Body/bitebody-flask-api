@@ -92,7 +92,7 @@ def create_user():
 
         cur.execute("SELECT email FROM BiteBody.Users WHERE email = '" + email +"';")
         emailFound = cur.fetchone()
-        print("Email Found value: "+ emailFound)
+        print("Email Found value: ", emailFound)
         if(emailFound):
             return {"Error": "Can't add already existing email"}
         else:
