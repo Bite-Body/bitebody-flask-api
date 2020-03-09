@@ -73,6 +73,9 @@ def create_collab():
         cur.execute("SELECT id FROM Bitebody.Users Where id = " +str(id) +  ";")
         row = cur.fetchone()
         foundID = row[0]
+        print("row: ", row)
+        print("foundID: ", foundID)
+        
         if foundID == None:
             return {"NOT FOUND":"Can't create Collab if given ID does not exist in USER table"}
         else:
