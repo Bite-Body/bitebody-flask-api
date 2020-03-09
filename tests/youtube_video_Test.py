@@ -7,7 +7,7 @@ import json
 #import hector from '../../static/images/HectorBB.png'
 
 def GetAll():
-    url = "http://localhost:5000/youtube_videos/all"
+    url = "https://gentle-inlet-25364.herokuapp.com/youtube_videos/all"
 
     response = requests.get(url)
 
@@ -23,7 +23,7 @@ def GetAll():
         print("GET ALL Failed")
 
 def GetSingle(userNum):
-    url = "http://localhost:5000/youtube_videos/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/youtube_videos/" + userNum
 
     res = requests.get(url)
     pprint.pprint (res.content)
@@ -37,7 +37,7 @@ def GetSingle(userNum):
         print("GET SINGLE Failed")
 
 def Delete(userNum): #Confirmation Code given despite attempting delete on null row. Figure out Fix
-    url = "http://localhost:5000/youtube_videos/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/youtube_videos/" + userNum
 
     res = requests.delete(url)
     pprint.pprint (res.content)
@@ -50,7 +50,7 @@ def Delete(userNum): #Confirmation Code given despite attempting delete on null 
         print("DELETE Failed")
 
 def Post():
-    url = "http://localhost:5000/youtube_videos"
+    url = "https://gentle-inlet-25364.herokuapp.com/youtube_videos"
     payload = {"id" : "50","id_collaborator":"1", "video_count":"test", "video_link":"test"}
     r = requests.post(url, json=payload)
     print(r)
@@ -65,7 +65,7 @@ def Post():
 
 
 def Put(userNum):
-    url = "http://localhost:5000/youtube_videos/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/youtube_videos/" + userNum
     payload = {"id_collaborator":"28", "video_count":"update", "video_link":"update"}
     r = requests.put(url, json=payload)
     print(r)

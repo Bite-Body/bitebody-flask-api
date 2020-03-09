@@ -7,7 +7,7 @@ import json
 #import hector from '../../static/images/HectorBB.png'
 
 def GetAll():
-    url = "http://localhost:5000/workouts/all"
+    url = "https://gentle-inlet-25364.herokuapp.com/workouts/all"
 
     response = requests.get(url)
     pprint.pprint (response.text)
@@ -22,7 +22,7 @@ def GetAll():
         print("GET ALL Failed")
 
 def GetSingle(userNum):
-    url = "http://localhost:5000/workouts/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/workouts/" + userNum
 
     res = requests.get(url)
     pprint.pprint (res.content)
@@ -36,7 +36,7 @@ def GetSingle(userNum):
         print("GET SINGLE Failed")
 
 def Delete(userNum): #Confirmation Code given despite attempting delete on null row. Figure out Fix
-    url = "http://localhost:5000/workouts/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/workouts/" + userNum
 
     res = requests.delete(url)
     pprint.pprint (res.content)
@@ -49,7 +49,7 @@ def Delete(userNum): #Confirmation Code given despite attempting delete on null 
         print("DELETE Failed")
 
 def Post():
-    url = "http://localhost:5000/workouts"
+    url = "https://gentle-inlet-25364.herokuapp.com/workouts"
     payload = {"id" : "10",
     "workout_name":"test", 
     "workout_description": "test",
@@ -71,7 +71,7 @@ def Post():
 
 
 def Put(userNum):
-    url = "http://localhost:5000/workouts/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/workouts/" + userNum
     payload = {
     "workout_name":"updated", 
     "workout_description": "updated",

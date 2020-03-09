@@ -8,7 +8,7 @@ import json
 
 
 def GetAll():
-    url = "http://localhost:5000/meals/all"
+    url = "https://gentle-inlet-25364.herokuapp.com/meals/all"
 
     response = requests.get(url)
 
@@ -24,7 +24,7 @@ def GetAll():
         print("GET ALL Failed")
 
 def GetSingle(userNum):
-    url = "http://localhost:5000/meals/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/meals/" + userNum
 
     res = requests.get(url)
     pprint.pprint (res.content)
@@ -38,7 +38,7 @@ def GetSingle(userNum):
         print("GET SINGLE Failed")
 
 def Delete(userNum): #Confirmation Code given despite attempting delete on null row. Figure out Fix
-    url = "http://localhost:5000/meals/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/meals/" + userNum
     res = requests.delete(url)
     pprint.pprint (res.content)
     if "code" in res.text:
@@ -50,7 +50,7 @@ def Delete(userNum): #Confirmation Code given despite attempting delete on null 
         print("DELETE Failed")
 
 def Post():
-    url = "http://localhost:5000/meals"
+    url = "https://gentle-inlet-25364.herokuapp.com/meals"
 
     payload = {"id":"11", "meal_name":"testMeal", "calories": "0", "protein": "testProtein", "fat": "testFat", "carbs": "testCarbs", "ingredients": "testIngredients", "preptime": "testPreptime", "directions": "testDirections", "image_path": "testImage", "breakfast": "0", "lunch": "0", "dinner": "0", "brunch": "0", "linner":"0"}
     r = requests.post(url, json=payload)
@@ -66,7 +66,7 @@ def Post():
 
 
 def Put(userNum):
-    url = "http://localhost:5000/meals/" + userNum
+    url = "https://gentle-inlet-25364.herokuapp.com/meals/" + userNum
     payload = {"id":"11", "meal_name":"updated", "calories": "updated", "protein": "updated", "fat": "updated", "carbs": "updated", "ingredients": "updated", "preptime": "updated", "directions": "updated", "image_path": "updated", "breakfast": "u", "lunch": "u", "dinner": "u", "brunch": "u", "linner":"u"}
     r = requests.put(url, json=payload)
     print(r)
