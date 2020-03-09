@@ -89,20 +89,25 @@ def create_user():
         first_name = request.get_json()['first_name']
         last_name = request.get_json()['last_name']
         email = request.get_json()['email']
-        password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
-        cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password) VALUES ('" 
-            + first_name + "', '" 
-            + last_name + "', '" 
-            + email + "', '" 
-            + password + "');")
-        mysql.connection.commit()
-        posted = {
-            'first_name' : first_name, 
-            'last_name' : last_name,
-            'email' : email,
-            'password' : password
-        }
-        return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
+        cur.execute("SELECT email FROM BiteBody.Users WHERE email = " + email +";")
+        emailFound = cur.fetchone()
+        if(emailFound):
+            return {"Error": "Can't add already existing email"}
+        else:
+            password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
+            cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password) VALUES ('" 
+                + first_name + "', '" 
+                + last_name + "', '" 
+                + email + "', '" 
+                + password + "');")
+            mysql.connection.commit()
+            posted = {
+                'first_name' : first_name, 
+                'last_name' : last_name,
+                'email' : email,
+                'password' : password
+            }
+            return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
     except Exception as e:
         print(e)
         return {"Error": "Unable to create this user.", "code": 400}
