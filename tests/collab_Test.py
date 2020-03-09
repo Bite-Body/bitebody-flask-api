@@ -5,7 +5,7 @@ collab = Blueprint("collab", __name__)
 
 from manage import mysql
 import requests
-from 'api\collab.py' import getMinID
+from api.collab import getMinID
 import pprint
 
 
