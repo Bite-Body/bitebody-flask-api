@@ -85,7 +85,7 @@ def Post():
         #print(response.text)
 
     ##METHOD 4 -- ACTUALLY WORKS (THANK THE LORD)
-    payload = {"first_name" : "TestFN", "last_name": "TestLN", "email": "TestEmail@Gmail.com" ,"password": "TestPassword"}
+    payload = {"first_name" : "TestFN", "last_name": "TestLN", "email": "TestEmail1@Gmail.com" ,"password": "TestPassword"}
     r = requests.post(url, json=payload)
     print(r)
     print(r.text)
