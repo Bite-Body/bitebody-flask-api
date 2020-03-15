@@ -2,7 +2,7 @@ import requests
 import pprint
 import json
 
-
+import collab
 
 
 #import jfile from 'api/user_Post.json'
@@ -39,7 +39,7 @@ def GetSingle(userNum):
         print("GET SINGLE Failed")
 
 def Delete(): #Confirmation Code given despite attempting delete on null row. Figure out Fix
-    userNum = collab2.getMinID()
+    userNum = collab.getMinID()
     url = "https://gentle-inlet-25364.herokuapp.com/collabs/" + userNum
 
     res = requests.delete(url)
@@ -84,10 +84,3 @@ def Put(userNum):
 
 
 collabPC = 0
-
-GetAll()
-GetSingle("1")
-Delete()
-Post()
-Put("50")
-print(collabPC , "/5 tests passed")
