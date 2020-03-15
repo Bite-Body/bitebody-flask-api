@@ -22,9 +22,9 @@ def GetAll():
 
     if "code" in response.text:
         print("GET ALL Passed")
-        global pc
-        pc =  pc + 1
-        return pc
+        global collabPC
+        collabPC =  collabPC + 1
+        return collabPC
     else:
         print("GET ALL Failed")
 
@@ -36,9 +36,9 @@ def GetSingle(userNum):
 
     if "code" in res.text:
         print("GET SINGLE Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global collabPC
+        collabPC = collabPC + 1
+        return collabPC
     else:
         print("GET SINGLE Failed")
 
@@ -50,9 +50,9 @@ def Delete(): #Confirmation Code given despite attempting delete on null row. Fi
     pprint.pprint (res.content)
     if "code" in res.text:
         print("DELETE Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global collabPC
+        collabPC = collabPC + 1
+        return collabPC
     else:
         print("DELETE Failed")
 
@@ -64,9 +64,9 @@ def Post():
     print(r.text)
     if "code" in r.text:
         print("POST Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global collabPC
+        collabPC = collabPC + 1
+        return collabPC
     else:
         print("POST Failed")
 
@@ -79,18 +79,12 @@ def Put(userNum):
     print(r.text)
     if "code" in r.text:
         print("PUT Passed")
-        global pc
-        pc = pc + 1
-        return pc
+        global collabPC
+        collabPC = collabPC + 1
+        return collabPC
     else:
         print("PUT Failed")
     
 
 
-pc = 0
-GetAll()
-GetSingle("1")
-Delete()
-Post()
-Put("50")
-print(pc , "/5 tests passed")
+collabPC = 0
