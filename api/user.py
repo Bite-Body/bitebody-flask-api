@@ -1,7 +1,6 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
-from logger import Logger
-import datetime
+from logger import post_log
 
 user = Blueprint("user", __name__)
 
@@ -23,14 +22,8 @@ def get_all_users():
             temp_user['email'] = row[3]
             all_users.append(temp_user)
 
-        current_time = datetime.datetime.now() 
-        log = {"log": {
-                "source": "Bitebody.xyz API",
-                "time": str(current_time),
-                "action": "/user/all"
-                }
-            }
-        Logger.post_log(log)
+        post_log('/users/all')
+
         return Response(json.dumps({"users": all_users, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrive all users.", "error message": str(e)}
