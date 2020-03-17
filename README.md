@@ -69,7 +69,7 @@ heroku container:release web --app gentle-inlet-25364
 ```
 heroku logs --tail
 ```
-## Testing API endpoints through Python Files
+## Testing API endpoints through Individual Python Files
 
 Before going through with the steps outlined below, please have a local instance of the application running. Documentation for running locally can be found above in the "Running Application Locally" section of the README. :)
 
@@ -154,3 +154,15 @@ cd tests
 ```
 python workout_Test.py
 ```
+## Testing API endpoints through A SINGLE Python File
+
+1. Open the Command Prompt on your machine.
+2. Change directory to backend
+```
+cd bitebody-flask-api
+```
+3. run Test_Tables file
+```
+python Test_Tables.py
+```
+4. Once you start the file running, make sure to press any key whenever text stops appearing on screen. This is meant fo you to proceed whenever you're done reading each table's set of tests.
