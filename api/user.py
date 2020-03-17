@@ -24,13 +24,13 @@ def get_all_users():
             all_users.append(temp_user)
 
         current_time = datetime.datetime.now() 
-        Logger.post_log({
-            "log": {
+        log = {"log": {
                 "source": "Bitebody.xyz API",
                 "time": str(current_time),
                 "action": "/user/all"
                 }
-        })
+            }
+        Logger.post_log(log)
         return Response(json.dumps({"users": all_users, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrive all users.", "error message": str(e)}
