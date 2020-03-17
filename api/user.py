@@ -22,7 +22,7 @@ def get_all_users():
             all_users.append(temp_user)
         return Response(json.dumps({"users": all_users, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to retrive all users."}
+        return {"Error": "Unable to retrive all users.", "error message": str(e)}
 
 @user.route('/<int:userID>', methods=['GET'])
 def find_user(userID):
@@ -38,7 +38,7 @@ def find_user(userID):
         }
         return Response(json.dumps({"user": user, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to retrieve this user."}
+        return {"Error": "Unable to retrieve this user.", "error message": str(e)}
         
 @user.route('/<int:userID>', methods=['DELETE'])
 def delete_user(userID):
@@ -57,7 +57,7 @@ def delete_user(userID):
             }
             return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to delete this user.", "Message": str(e)}
+        return {"Error": "Unable to delete this user.", "error message": str(e)}
 
 @user.route('/<int:userID>', methods = ['PUT'])
 def update_user_info(userID):
@@ -80,7 +80,7 @@ def update_user_info(userID):
         return Response(json.dumps({"updated": updated, "code": 201}), mimetype='application/json')
     except Exception as e:
         print(e)
-        return {"Error": "Unable to update this user."}
+        return {"Error": "Unable to update this user.", "error message": str(e)}
 
 @user.route('', methods=['POST'])
 def create_user():
@@ -112,7 +112,7 @@ def create_user():
             return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
     except Exception as e:
         print(e)
-        return {"Error": "Unable to create this user.", "code": 400, "ErrorMessage": str(e)}
+        return {"Error": "Unable to create this user.", "ErrorMessage": str(e)}
 
 @user.route('/login', methods=['POST'])
 def login():
