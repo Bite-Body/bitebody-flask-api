@@ -13,10 +13,11 @@ def post_log(action):
         }
     }
 
-    print(json.dumps(log))
+    header = {
+        'Content-Type': 'application/json'
+    }
 
     try:
-        r = requests.get(url, data=json.dumps(log))
-        print(r.text, r.status_code, r.reason)
+        r = requests.get(url, data=json.dumps(log), headers = header)
     except Exception as e:
         print(e)
