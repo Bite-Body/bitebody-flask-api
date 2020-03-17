@@ -22,7 +22,7 @@ def get_all_users():
             temp_user['email'] = row[3]
             all_users.append(temp_user)
 
-        post_log('/users/all')
+        post_log('GET /users/all')
 
         return Response(json.dumps({"users": all_users, "code": 200}), mimetype='application/json')
     except Exception as e:
