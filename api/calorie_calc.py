@@ -68,4 +68,4 @@ def calc_cal():
         cal_count = gain_or_lose(calculate_activity(user_info()))
         return Response(json.dumps({"Daily calorie to consume": cal_count, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to calculate calories."}
+        return {"Error": "Unable to calculate calories.", "error message": str(e)}

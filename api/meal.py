@@ -25,7 +25,7 @@ def get_all_meals():
             all_meals.append(temp_meals)
         return Response(json.dumps({"meals": all_meals, "code": 201}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to retrive all meals."}
+        return {"Error": "Unable to retrive all meals.", "error message": str(e)}
 
 @meal.route('/<int:meal_ID>', methods=['GET'])
 def find_meal(meal_ID):
@@ -45,7 +45,7 @@ def find_meal(meal_ID):
         }
         return Response(json.dumps({"meal": meal, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to retrieve this meal."}
+        return {"Error": "Unable to retrieve this meal.", "error message": str(e)}
 
 @meal.route('/<int:meal_ID>', methods=['DELETE'])
 def delete_meal(meal_ID):
@@ -58,7 +58,7 @@ def delete_meal(meal_ID):
         }
         return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to delete this meal."}
+        return {"Error": "Unable to delete this meal.", "error message": str(e)}
 
 @meal.route('/<int:meal_ID>', methods = ['PUT'])
 def update_meal_info(meal_ID):
@@ -88,7 +88,7 @@ def update_meal_info(meal_ID):
         }
         return Response(json.dumps({"updated": meal, "code": 201}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to update this meal."}
+        return {"Error": "Unable to update this meal.", "error message": str(e)}
 
 @meal.route('', methods=['POST'])
 def insert_meal():
@@ -124,4 +124,4 @@ def insert_meal():
         }
         return Response(json.dumps({"meal added": meal, "code": 201}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to create this meal."}
+        return {"Error": "Unable to create this meal.", "error message": str(e)}

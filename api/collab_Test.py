@@ -1,8 +1,8 @@
 import requests
 import pprint
 import json
-
-import collab
+from flask import Blueprint
+import api.collab
 
 
 #import jfile from 'api/user_Post.json'
@@ -39,7 +39,7 @@ def GetSingle(userNum):
         print("GET SINGLE Failed")
 
 def Delete(): #Confirmation Code given despite attempting delete on null row. Figure out Fix
-    userNum = collab.getMinID()
+    userNum = api.collab.getMinID()
     url = "https://gentle-inlet-25364.herokuapp.com/collabs/" + userNum
 
     res = requests.delete(url)
