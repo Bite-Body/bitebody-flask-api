@@ -25,7 +25,7 @@ def get_all_workouts():
             all_workouts.append(temp_workout)
         return Response(json.dumps({"workouts": all_workouts, "code": 201}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to retrive all workouts."}
+        return {"Error": "Unable to retrive all workouts.", "error message": str(e)}
 
 @workout.route('/<int:wkoutID>', methods=['GET'])
 def find_workout(wkoutID):
@@ -46,7 +46,7 @@ def find_workout(wkoutID):
         return Response(json.dumps({"workout": workout, "code": 200}), mimetype='application/json')
     except Exception as e:
 
-        return {"Error": "Unable to retrieve this workout."}
+        return {"Error": "Unable to retrieve this workout.", "error message": str(e)}
 
 @workout.route('/<int:wkoutID>', methods=['DELETE'])
 def delete_workout(wkoutID):
@@ -59,7 +59,7 @@ def delete_workout(wkoutID):
         }
         return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to delete this workout."}
+        return {"Error": "Unable to delete this workout.", "error message": str(e)}
 
 @workout.route('/<int:wkoutID>', methods = ['PUT'])
 def update_workout_info(wkoutID):
@@ -89,7 +89,7 @@ def update_workout_info(wkoutID):
         }
         return Response(json.dumps({"updated": workout, "code": 201}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to update this workout."}
+        return {"Error": "Unable to update this workout.", "error message": str(e)}
 
 @workout.route('', methods=['POST'])
 def insert_workout():
@@ -125,4 +125,4 @@ def insert_workout():
         }
         return Response(json.dumps({"workout added": workout, "code": 201}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to create this workout."}
+        return {"Error": "Unable to create this workout.", "error message": str(e)}

@@ -131,7 +131,7 @@ def login():
         else:
             raise Exception('Passwords do not match')
         
-        return {"Allow": "yes"}
+        return {"Allow": "yes", "error message": str(e)}
 
     except Exception as e:
         print (e)
