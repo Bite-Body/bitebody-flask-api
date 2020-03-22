@@ -133,15 +133,21 @@ def login():
         cur.execute("SELECT * FROM BiteBody.Users where email = '" + str(email) + "'")
         rv = cur.fetchone()
         result = {}
-        print(rv[4])
-        print(password)
 
         if bcrypt.check_password_hash(rv[4], password):
             print("Passwords Match!")
         else:
             raise Exception('Passwords do not match')
         
-        return {"Allow": "yes"}
+        return {
+            "Allow": "yes", 
+            "user": {
+                "id": rv[0],
+                "first_name": rv[1],
+                "last_name": rv[2],
+                "email": rv[3]
+            }
+        }
 
     except Exception as e:
         print (e)
