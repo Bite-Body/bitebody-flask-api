@@ -137,7 +137,7 @@ def login():
         result = ''
 
         if bcrypt.check_password_hash(rv[4], password):
-            access_token = create_access_token(identity = {'first_name': rv['first_name'],'last_name': rv['last_name'],'email': rv['email'],'id': rv['id']})
+            access_token = create_access_token(identity = {'first_name': rv[1],'last_name': rv[2],'email': rv[3],'id': rv[0]})
             result = access_token
         else:
             raise Exception('Passwords do not match')
@@ -146,7 +146,7 @@ def login():
 
     except Exception as e:
         return {
-            "Error": "Incorrect email or password.",
+            "Error": str(e),
             "Allow": "no"
         }
 
