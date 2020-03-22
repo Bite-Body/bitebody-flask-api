@@ -157,7 +157,8 @@ def forgot_password():
 
         smtp_server = "smtp.gmail.com"
         sender = "bitebodyxyztest@gmail.com"
-        getter = "bitebodyxyz@gmail.com"
+        #getter = "bitebodyxyz@gmail.com"
+        getter = request.get_json()['email']
         password = "tester_account404"
 
 
