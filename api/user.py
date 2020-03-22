@@ -1,7 +1,12 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
 from logger import post_log
-import api.email_Test 
+#import api.email_Test 
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
 
 user = Blueprint("user", __name__)
 
@@ -148,17 +153,55 @@ def login():
 @user.route('/forgot-password', methods = ['POST'])
 def forgot_password():
     try:
+        port = 465  # For SSL
+
+        smtp_server = "smtp.gmail.com"
+        sender = "bitebodyxyztest@gmail.com"
+        getter = "bitebodyxyz@gmail.com"
+        password = "tester_account404"
+
+
+        message = MIMEMultipart("alternative")
+        message["subject"] = "New Account"
+        message["From"] = sender
+        message["To"] = getter
         #cur = mysql.connection.cursor()
-        email = request.get_json()['email']
+        #email = request.get_json()['email']
         #password = request.get_json()['password']
         #confirmed_password = request.get_json()['confirmed_password']
-        print("Email ", email)
+        #print("Email ", email)
         #print("Password: ", password)
         #print("Confirmed Password: ", confirmed_password)
 
-        with api.email_Test.smtplib.SMTP_SSL(api.email_Test.smtp_server, api.email_Test.port, context=api.email_Test.context) as server:
-            server.login(api.email_Test.sender, api.email_Test.password)
-            server.sendmail(api.email_Test.sender,api.email_Test.getter,api.email_Test.message.as_string())
+        html = """\
+        <html>
+            <body>
+            <p>According to your recent account activity, you are in need of a replacement password.<br>
+                <a href="http://www.realpython.com">CLICK RIGHT HERE</a> 
+                to reset your account's password.
+            </p>
+            </body>
+        </html>
+        """
+
+        # Turn these into plain/html MIMEText objects
+        #part1 = MIMEText(text, "plain")
+        part2 = MIMEText(html, "html")
+
+        # Add HTML/plain-text parts to MIMEMultipart message
+        # The email client will try to render the last part first
+        #message.attach(part1)
+        message.attach(part2)
+
+
+        # Create a secure SSL context
+        context = ssl.create_default_context()
+
+
+        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+            server.login(sender, password)
+            server.sendmail(sender,getter,message.as_string())
+            # TODO: Send email here
         
         return {"Allow": "yes"}
     except Exception as e:
