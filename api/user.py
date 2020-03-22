@@ -146,7 +146,7 @@ def login():
 
     except Exception as e:
         return {
-            "Error": str(e),
+            "Error": "Incorrect email or password.",
             "Allow": "no"
         }
 

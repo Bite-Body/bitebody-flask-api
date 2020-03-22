@@ -25,6 +25,7 @@ if __name__ == '__main__':
     app.config['MYSQL_USER'] = os.getenv('AWS_DB_USERNAME')
     app.config['MYSQL_PASSWORD'] = os.getenv('AWS_DB_PASSWORD')
     app.config['MYSQL_DB'] = os.getenv('AWS_DB_DEFAULT')
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 
     mysql.init_app(app)
     bcrypt.init_app(app)
