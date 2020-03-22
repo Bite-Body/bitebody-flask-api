@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
+from logger import post_log
 
 calorie_calc = Blueprint("calorie_calc", __name__)
 
@@ -66,6 +67,8 @@ def calc_cal():
 
 
         cal_count = gain_or_lose(calculate_activity(user_info()))
+
+        post_log('GET /calories')
         return Response(json.dumps({"Daily calorie to consume": cal_count, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to calculate calories.", "error message": str(e)}

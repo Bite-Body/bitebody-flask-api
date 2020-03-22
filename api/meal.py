@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
+from logger import post_log
 
 meal = Blueprint("meal", __name__)
 
@@ -23,6 +24,8 @@ def get_all_meals():
             temp_meals['ingredients'] = row[6]
             temp_meals['preptime'] = row[7]
             all_meals.append(temp_meals)
+
+        post_log('GET /meals/all')
         return Response(json.dumps({"meals": all_meals, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrive all meals.", "error message": str(e)}
@@ -43,6 +46,8 @@ def find_meal(meal_ID):
             'ingredients': row[6],
             'preptime': row[7]
         }
+
+        post_log('GET /meals/<int:meal_ID>')
         return Response(json.dumps({"meal": meal, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrieve this meal.", "error message": str(e)}
@@ -56,6 +61,8 @@ def delete_meal(meal_ID):
         deleted = {
             'id' : meal_ID
         }
+
+        post_log('DELETE /meals/<int:meal_ID>')
         return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to delete this meal.", "error message": str(e)}
@@ -86,6 +93,8 @@ def update_meal_info(meal_ID):
             'ingredients': ingredients,
             'preptime': preptime                
         }
+
+        post_log('PUT /meals/<int:meal_ID>')
         return Response(json.dumps({"updated": meal, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to update this meal.", "error message": str(e)}
@@ -122,6 +131,8 @@ def insert_meal():
             'ingredients': ingredients,
             'preptime': preptime                
         }
+
+        post_log('POST /meals')
         return Response(json.dumps({"meal added": meal, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to create this meal.", "error message": str(e)}

@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
+from logger import post_log
 
 collab = Blueprint("collab", __name__)
 
@@ -17,6 +18,8 @@ def get_all_collabs():
             temp_collab['id'] = row[0]
             temp_collab['youtube_link'] = row[1]
             all_collabs.append(temp_collab)
+
+        post_log('GET /collabs/all')
         return Response(json.dumps({"collabs": all_collabs, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrive all collaborators.","error message": str(e)}
@@ -31,6 +34,8 @@ def find_collaborator(collabID):
             'youtube_link':row[1],
             'id' : row[0]
         }
+
+        post_log('GET /meals/<int:collabID>')
         return Response(json.dumps({"collaborator": collab, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrieve this collaborator.","error message": str(e)}
@@ -44,6 +49,8 @@ def delete_collab(collabID):
         deleted = {
             'id' : collabID
         }
+
+        post_log('DELETE /meals/<int:collabID>')
         return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to delete this collaborator.","error message": str(e)}
@@ -59,6 +66,8 @@ def update_collab_info(collabID):
         updated = {
             'youtube_link':youtube_link
         }
+
+        post_log('PUT /meals/<int:collabID>')
         return Response(json.dumps({"updated": updated, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to update this collaborator." ,"error message": str(e)}
@@ -87,6 +96,8 @@ def create_collab():
             'youtube link' : youtube_link,
             'id' : id
         }
+
+        post_log('POST /meals')
         return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to create this collaborator.", "error message": str(e)}
