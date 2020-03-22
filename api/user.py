@@ -1,6 +1,7 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
 from logger import post_log
+import api.email_Test 
 
 user = Blueprint("user", __name__)
 
@@ -143,3 +144,23 @@ def login():
             "Error": "Incorrect email or password.",
             "Allow": "no"
         }
+
+@user.route('/forgot-password', methods = ['POST'])
+def forgot_password():
+    try:
+        #cur = mysql.connection.cursor()
+        email = request.get_json()['email']
+        #password = request.get_json()['password']
+        #confirmed_password = request.get_json()['confirmed_password']
+        print("Email ", email)
+        #print("Password: ", password)
+        #print("Confirmed Password: ", confirmed_password)
+
+        with api.email_Test.smtplib.SMTP_SSL(api.email_Test.smtp_server, api.email_Test.port, context=api.email_Test.context) as server:
+            server.login(api.email_Test.sender, api.email_Test.password)
+            server.sendmail(api.email_Test.sender,api.email_Test.getter,api.email_Test.message.as_string())
+        
+        return {"Allow": "yes"}
+    except Exception as e:
+        print(e)
+        return {"Error": "Unable to perform operation.", "Error Message": str(e)}
