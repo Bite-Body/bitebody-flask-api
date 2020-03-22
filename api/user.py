@@ -48,6 +48,8 @@ def find_user(userID):
             'email' : row[3],
             'id' : row[0]
         }
+
+        post_log('GET /users/<int:userID>')
         return Response(json.dumps({"user": user, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrieve this user.", "error message": str(e)}
@@ -67,6 +69,8 @@ def delete_user(userID):
             deleted = {
                 'id' : userID 
             }
+
+            post_log('DELETE /users/<int:userID>')
             return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to delete this user.", "error message": str(e)}
@@ -89,6 +93,8 @@ def update_user_info(userID):
             'password' : password
         }
         
+
+        post_log('PUT /users/<int:userID>')
         return Response(json.dumps({"updated": updated, "code": 201}), mimetype='application/json')
     except Exception as e:
         print(e)
@@ -121,6 +127,8 @@ def create_user():
                 'email' : email,
                 'password' : password
             }
+
+            post_log('POST /users')
             return Response(json.dumps({"posted": posted, "code": 201}), mimetype='application/json')
     except Exception as e:
         print(e)
@@ -142,6 +150,8 @@ def login():
         else:
             raise Exception('Passwords do not match')
         
+
+        post_log('POST /users/login')
         return result
 
     except Exception as e:
@@ -209,6 +219,7 @@ def forgot_password():
                 server.sendmail(sender,getter,message.as_string())
                 # TODO: Send email here
             
+            post_log('POST /users/forgot-password')
             return {"Allow": "yes"}
         else:
             return {"Error": "Email entered is not a member of Bitebody.xyz"}
