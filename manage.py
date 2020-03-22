@@ -2,10 +2,12 @@ from flask import Flask
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 import os
 
 mysql = MySQL()
 bcrypt = Bcrypt()
+jwt = JWTManager()
 
 from api.home import home
 from api.user import user
@@ -26,6 +28,7 @@ if __name__ == '__main__':
 
     mysql.init_app(app)
     bcrypt.init_app(app)
+    jwt.init_app(app)
     CORS(app)
     
 

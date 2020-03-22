@@ -6,3 +6,4 @@ Flask-Cors==3.0.8
 Flask-Bcrypt==0.7.1
 requests==2.23.0
 DateTime==4.3
+Flask-JWT-Extended==3.21.0

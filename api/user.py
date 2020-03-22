@@ -1,6 +1,7 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
 from logger import post_log
+from flask_jwt_extended import (create_access_token)
 #import api.email_Test 
 import smtplib, ssl
 from email.mime.text import MIMEText
@@ -12,6 +13,7 @@ user = Blueprint("user", __name__)
 
 from manage import mysql as mysql
 from manage import bcrypt as bcrypt
+from manage import jwt as jwt
 
 @user.route('/all', methods=['GET'])
 def get_all_users():
@@ -132,25 +134,17 @@ def login():
         password = request.get_json()['password']
         cur.execute("SELECT * FROM BiteBody.Users where email = '" + str(email) + "'")
         rv = cur.fetchone()
-        result = {}
+        result = ''
 
         if bcrypt.check_password_hash(rv[4], password):
-            print("Passwords Match!")
+            access_token = create_access_token(identity = {'first_name': rv['first_name'],'last_name': rv['last_name'],'email': rv['email'],'id': rv['id']})
+            result = access_token
         else:
             raise Exception('Passwords do not match')
         
-        return {
-            "Allow": "yes", 
-            "user": {
-                "id": rv[0],
-                "first_name": rv[1],
-                "last_name": rv[2],
-                "email": rv[3]
-            }
-        }
+        return result
 
     except Exception as e:
-        print (e)
         return {
             "Error": "Incorrect email or password.",
             "Allow": "no"
