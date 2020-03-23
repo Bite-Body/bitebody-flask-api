@@ -3,6 +3,7 @@ import pprint
 import json
 from flask import Blueprint
 import api.collab
+from logger import post_log
 
 
 #import jfile from 'api/user_Post.json'

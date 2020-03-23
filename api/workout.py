@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
+from logger import post_log
 
 workout = Blueprint("workout", __name__)
 
@@ -23,6 +24,8 @@ def get_all_workouts():
             temp_workout['duration'] = row[6]
             temp_workout['equipment'] = row[7]
             all_workouts.append(temp_workout)
+
+        post_log('GET /workouts/all')
         return Response(json.dumps({"workouts": all_workouts, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrive all workouts."}
@@ -43,6 +46,8 @@ def find_workout(wkoutID):
             'duration': row[6],
             'equipment': row[7]
         }
+
+        post_log('GET /workouts/<int:wkoutID>')
         return Response(json.dumps({"workout": workout, "code": 200}), mimetype='application/json')
     except Exception as e:
 
@@ -57,6 +62,8 @@ def delete_workout(wkoutID):
         deleted = {
             'id' : wkoutID
         }
+
+        post_log('DELETE /workouts/<int:wkoutID>')
         return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to delete this workout."}
@@ -87,6 +94,8 @@ def update_workout_info(wkoutID):
             'duration': duration,
             'equipment': equipment
         }
+
+        post_log('PUT /workouts/<int:wkoutID>')
         return Response(json.dumps({"updated": workout, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to update this workout."}
@@ -123,6 +132,8 @@ def insert_workout():
             'duration': duration,
             'equipment': equipment
         }
+
+        post_log('POST /workouts')
         return Response(json.dumps({"workout added": workout, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to create this workout."}

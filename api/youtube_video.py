@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
+from logger import post_log
 
 youtube_video = Blueprint("youtube_video", __name__)
 
@@ -20,6 +21,7 @@ def get_all_youtube_videos():
             temp_workout['video_link'] = row[3]
             all_youtube_videos.append(temp_workout)
 
+        post_log('GET /youtube_videos/all')
         return Response(json.dumps({"youtube_videos": all_youtube_videos, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrive all youtube videos."}
@@ -36,6 +38,8 @@ def find_Youtube_Videos(videoID):
             'video_count':row[2],
             'video_link' : row[3]
         }
+
+        post_log('GET /youtube_videos/<int:videoID>')
         return Response(json.dumps({"youtube_video": yt_video, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrieve this youtube video."}
@@ -49,6 +53,8 @@ def delete_youtube_video(videoID):
         deleted = {
             'id' : videoID
         }
+
+        post_log('DELETE /youtube_videos/<int:videoID>')
         return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to delete this youtube video."}
@@ -70,7 +76,9 @@ def update_youtube_video(videoID):
             'id_collaborator': id_collaborator,
             'video_count': video_count,
             'video_link' : video_link
-        } 
+        }
+
+        post_log('PUT /youtube_videos/<int:videoID>') 
         return Response(json.dumps({"updated": yt_video, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to update this youtube video."}
@@ -95,6 +103,8 @@ def insert_youtube_video():
             'video_count': video_count,
             'video_link' : video_link
         }
+
+        post_log('POST /youtube_videos')
         return Response(json.dumps({"youtube_video": yt_video, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to create this youtube video."}
