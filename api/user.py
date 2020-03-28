@@ -150,8 +150,8 @@ def login():
         else:
             raise Exception('Passwords do not match')
         
-
-        post_log('POST /users/login')
+        custom_msg = 'POST /users/login for ' + email
+        post_log(custom_msg)
         return result
 
     except Exception as e:
