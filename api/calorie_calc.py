@@ -10,13 +10,9 @@ from manage import mysql
 def calc_cal():
     try:
         def user_info():
-            print('What is your age: ')
             age = request.get_json()['age']
-            print('What is your gender: ')
             gender = request.get_json()['gender']
-            print('What is your weight: ')
             weight = request.get_json()['weight']
-            print('What is your height in inches: ')
             height = request.get_json()['height']
 
             if gender == 'male':
@@ -50,18 +46,13 @@ def calc_cal():
 
         def gain_or_lose(activity_level):
             goals = request.get_json()['goal']
-
+            
             if goals == 'lose':
                 calories = activity_level - 500
             elif goals == 'maintain':
                 calories = activity_level
             elif goals == 'gain':
-                gain = request.get_json()['gain']
-                if gain == 1: 
-                    calories = activity_level + 500
-                elif gain == 2:
-                    calories = activity_level + 1000
-
+                calories = activity_level + 500
             
             return int(calories)
 
