@@ -6,7 +6,7 @@ calorie_calc = Blueprint("calorie_calc", __name__)
 
 from manage import mysql
 
-@calorie_calc.route('', methods=['GET'])
+@calorie_calc.route('', methods=['POST'])
 def calc_cal():
     try:
         def user_info():
