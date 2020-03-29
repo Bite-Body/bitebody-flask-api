@@ -62,4 +62,4 @@ def calc_cal():
         post_log('GET /calories')
         return Response(json.dumps({"Daily calorie to consume": cal_count, "code": 200}), mimetype='application/json')
     except Exception as e:
-        return {"Error": "Unable to calculate calories.", "error message": str(e)}
+        return {"Error": "Unable to calculate calories.", "error message": str(e), "payload sent": request.get_json()}
