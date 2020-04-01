@@ -194,7 +194,7 @@ def forgot_password():
                 <body>
                 <p>According to your recent account activity, you are in need of a replacement password.<br>
                     <a href="http://www.google.com">CLICK RIGHT HERE</a> 
-                    to reset your account's password.
+                    to reset your account's password. Here's an additional sentence to test the update to live site.
                 </p>
                 </body>
             </html>
