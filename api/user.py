@@ -229,4 +229,4 @@ def forgot_password():
 
 
 def tempPass(default=10):
-    return 0
+    return 5
