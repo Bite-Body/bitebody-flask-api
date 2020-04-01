@@ -15,6 +15,9 @@ from manage import mysql as mysql
 from manage import bcrypt as bcrypt
 from manage import jwt as jwt
 
+import random #For use in randomPassword()
+import string #For use in randomPassword()
+
 @user.route('/all', methods=['GET'])
 def get_all_users():
     try:
@@ -171,29 +174,24 @@ def forgot_password():
             port = 465  # For SSL
             smtp_server = "smtp.gmail.com"
             sender = "bitebodyxyztest@gmail.com"
-            #getter = "bitebodyxyz@gmail.com"
-
             password = "tester_account404"
 
-       
+            newTempPass = randomPassword()
+
 
             message = MIMEMultipart("alternative")
             message["subject"] = "Account Recovery For Bitebody.xyz"
             message["From"] = sender
             message["To"] = getter
-            #cur = mysql.connection.cursor()
-            #email = request.get_json()['email']
-            #password = request.get_json()['password']
-            #confirmed_password = request.get_json()['confirmed_password']
-            #print("Email ", email)
-            #print("Password: ", password)
-            #print("Confirmed Password: ", confirmed_password)
+
 
             html = """\
             <html>
                 <body>
-                <p>According to your recent account activity, you are in need of a replacement password.<br>
-                    <a href="http://www.google.com">CLICK RIGHT HERE</a> 
+                <p>According to your recent account activity, you are in need of a replacement password.
+                <br>
+                Here's your new TEMPORARY password: {{newTempPass}}
+                    <a href="https://www.bitebody.xyz/reset-password">CLICK RIGHT HERE</a> 
                     to reset your account's password.
                 </p>
                 </body>
@@ -226,3 +224,8 @@ def forgot_password():
     except Exception as e:
         print(e)
         return {"Error": "Unable to perform operation.", "Error Message": str(e)}
+
+def randomPassword(length=10):
+    """Generate a random string of letters and digits """
+    lettersAndDigits = string.ascii_letters + string.digits
+    return ''.join(random.choice(lettersAndDigits) for i in range(length))
