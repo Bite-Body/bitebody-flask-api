@@ -226,3 +226,7 @@ def forgot_password():
     except Exception as e:
         print(e)
         return {"Error": "Unable to perform operation.", "Error Message": str(e)}
+
+
+def tempPass(default=10):
+    return 0
