@@ -178,7 +178,8 @@ def forgot_password():
             password = "tester_account404"
 
             newTempPass = randomPassword()
-       
+            cur.execute("INSERT INTO BiteBody.Users (password_reset_key) VALUES ('" 
+                + newTempPass +"');")
 
             message = MIMEMultipart("alternative")
             message["subject"] = "Account Recovery For Bitebody.xyz"
