@@ -178,9 +178,9 @@ def forgot_password():
             password = "tester_account404"
 
             newTempPass = randomPassword()
-            cur.execute('UPDATE BiteBody.Users SET password_reset_key = '+newTempPass+ ' WHERE (email = '+str(getter)+');')
-            #cur.execute("INSERT INTO BiteBody.Users (password_reset_key) VALUES ('" 
-                #+ newTempPass +"');")
+            cur.execute("UPDATE BiteBody.Users SET password_reset_key = '"+newTempPass+ "' WHERE (email = '"+str(getter)+"');")
+            # cur.execute("INSERT INTO BiteBody.Users (password_reset_key) VALUES ('" 
+            #     + newTempPass +"');")
             mysql.connection.commit() #necessary for data modification
             message = MIMEMultipart("alternative")
             message["subject"] = "Account Recovery For Bitebody.xyz"
