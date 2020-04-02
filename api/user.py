@@ -197,7 +197,7 @@ def forgot_password():
                 <body>
                 <p>According to your recent account activity, you are in need of a replacement password.<br>
                     <a href="https://www.bitebody.xyz/reset-password">CLICK RIGHT HERE</a> 
-                    to reset your account's password. Your Temp Password is: {{newTempPass}}
+                    to reset your account's password. Your Temp Password is: {newTempPass}
                 </p>
                 </body>
             </html>
