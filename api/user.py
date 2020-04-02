@@ -201,7 +201,7 @@ def forgot_password():
                 </p>
                 </body>
             </html>
-            """
+            """.format(newTempPass = newTempPass)
 
             # Turn these into plain/html MIMEText objects
             #part1 = MIMEText(text, "plain")
