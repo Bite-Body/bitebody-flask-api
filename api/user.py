@@ -8,6 +8,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
+import string
+import random
 
 user = Blueprint("user", __name__)
 
@@ -175,6 +177,7 @@ def forgot_password():
 
             password = "tester_account404"
 
+            newTempPass = randomPassword()
        
 
             message = MIMEMultipart("alternative")
@@ -193,8 +196,8 @@ def forgot_password():
             <html>
                 <body>
                 <p>According to your recent account activity, you are in need of a replacement password.<br>
-                    <a href="http://www.google.com">CLICK RIGHT HERE</a> 
-                    to reset your account's password. Here's an additional sentence to test the update to live site.
+                    <a href="https://www.bitebody.xyz/reset-password">CLICK RIGHT HERE</a> 
+                    to reset your account's password. Your Temp Password is: {{newTempPass}}
                 </p>
                 </body>
             </html>
@@ -228,5 +231,18 @@ def forgot_password():
         return {"Error": "Unable to perform operation.", "Error Message": str(e)}
 
 
-def tempPass(default=10):
-    return 5
+def randomPassword(default=10):
+    """Generate a random password """
+    randomSource = string.ascii_letters + string.digits + string.punctuation
+    password = random.choice(string.ascii_lowercase)
+    password += random.choice(string.ascii_uppercase)
+    password += random.choice(string.digits)
+    password += random.choice(string.punctuation)
+
+    for i in range(6):
+        password += random.choice(randomSource)
+
+    passwordList = list(password)
+    random.SystemRandom().shuffle(passwordList)
+    password = ''.join(passwordList)
+    return password
