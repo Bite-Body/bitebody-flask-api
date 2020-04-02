@@ -192,7 +192,7 @@ def forgot_password():
                 <p>You are receiving this email because your recent account activity shows you are in need of a replacement password.<br>
                     <a href="https://www.bitebody.xyz/reset-password">CLICK RIGHT HERE</a> 
                     to reset your account's password.
-                    Your Temp Password is: {newTempPass} 
+                    Your Temp Password is: <b>{newTempPass}</b> 
                     Make sure to enter it when prompted.
                 </p>
                 </body>
