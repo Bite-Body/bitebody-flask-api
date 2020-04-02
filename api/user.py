@@ -180,7 +180,7 @@ def forgot_password():
             newTempPass = randomPassword()
             cur.execute("INSERT INTO BiteBody.Users (password_reset_key) VALUES ('" 
                 + newTempPass +"');")
-
+            mysql.connection.commit() #necessary for data modification
             message = MIMEMultipart("alternative")
             message["subject"] = "Account Recovery For Bitebody.xyz"
             message["From"] = sender
