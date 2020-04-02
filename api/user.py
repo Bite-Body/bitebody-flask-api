@@ -184,20 +184,16 @@ def forgot_password():
             message["subject"] = "Account Recovery For Bitebody.xyz"
             message["From"] = sender
             message["To"] = getter
-            #cur = mysql.connection.cursor()
-            #email = request.get_json()['email']
-            #password = request.get_json()['password']
-            #confirmed_password = request.get_json()['confirmed_password']
-            #print("Email ", email)
-            #print("Password: ", password)
-            #print("Confirmed Password: ", confirmed_password)
+
 
             html = """\
             <html>
                 <body>
-                <p>According to your recent account activity, you are in need of a replacement password.<br>
+                <p>You are receiving this email because your recent account activity shows you are in need of a replacement password.<br>
                     <a href="https://www.bitebody.xyz/reset-password">CLICK RIGHT HERE</a> 
-                    to reset your account's password. Your Temp Password is: {newTempPass}
+                    to reset your account's password.
+                    Your Temp Password is: {newTempPass} 
+                    Make sure to enter it when prompted.
                 </p>
                 </body>
             </html>
@@ -230,19 +226,7 @@ def forgot_password():
         print(e)
         return {"Error": "Unable to perform operation.", "Error Message": str(e)}
 
-
-def randomPassword(default=10):
-    """Generate a random password """
-    randomSource = string.ascii_letters + string.digits + string.punctuation
-    password = random.choice(string.ascii_lowercase)
-    password += random.choice(string.ascii_uppercase)
-    password += random.choice(string.digits)
-    password += random.choice(string.punctuation)
-
-    for i in range(6):
-        password += random.choice(randomSource)
-
-    passwordList = list(password)
-    random.SystemRandom().shuffle(passwordList)
-    password = ''.join(passwordList)
-    return password
+def randomPassword(stringLength=8):
+    """Generate a random string of letters and digits """
+    lettersAndDigits = string.ascii_letters + string.digits
+    return ''.join(random.choice(lettersAndDigits) for i in range(stringLength))
