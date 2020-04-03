@@ -243,9 +243,13 @@ def reset_password():
         confirmed_password = request.get_json()['confirmed_password']
         input_reset_key = request.get_json()['reset_key']
         cur.execute ("SELECT password_reset_key FROM BiteBody.Users WHERE email = '"+email+"';")
-        reset_key_in_DB = cur.fetchone()
+        raw_reset_key_in_DB = cur.fetchone()
+        mod_reset_key_in_DB = raw_reset_key_in_DB
+        chars_to_delete = "(',"
+        for character in chars_to_delete:
+            mod_reset_key_in_DB = mod_reset_key_in_DB.replace(character, "")
         encrypted_password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
-        if(reset_key_in_DB == input_reset_key):
+        if(mod_reset_key_in_DB == input_reset_key):
             if(password == confirmed_password):
                 cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
                 cur.execute("UPDATE BiteBody.Users SET password = '"+password+ "' WHERE (email = '"+str(email)+"');")
@@ -254,7 +258,7 @@ def reset_password():
             else:
                 return {"Error": "Passwords do not match!", "Allow":"No", "Password": password, "Conf Pass": confirmed_password}
         else:
-            return {"Error": str(reset_key_in_DB)+"/"+str(input_reset_key)}
+            return {"Error": str(mod_reset_key_in_DB)+"/"+str(input_reset_key)}
 
     except Exception as e:
         return {
