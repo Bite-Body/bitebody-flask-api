@@ -262,6 +262,6 @@ def reset_password():
 
     except Exception as e:
         return {
-            "Error": "Something Went Wrong.",
+            "Error": str(mod_reset_key_in_DB)+"/"+str(input_reset_key)+"/OuterExceptLook",
             "Allow": "no"
         }
