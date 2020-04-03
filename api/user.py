@@ -241,14 +241,20 @@ def reset_passwrod():
         email = request.get_json()['email']
         password = request.get_json()['password']
         confirmed_password = request.get_json()['confirmed_password']
+        input_reset_key = request.get_json()['reset_key']
+        cur.execute ("SELECT password_reset_key FROM BiteBody.Users WHERE email = '"+email+"';")
+        reset_key_in_DB = cur.fetchone()
         encrypted_password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
-        if(password == confirmed_password):
-            cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
-            cur.execute("UPDATE BiteBody.Users SET password = '"+password+ "' WHERE (email = '"+str(email)+"');")
-            mysql.connection.commit()
-            post_log('POST /reset-password')
+        if(reset_key_in_DB == input_reset_key):
+            if(password == confirmed_password):
+                cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
+                cur.execute("UPDATE BiteBody.Users SET password = '"+password+ "' WHERE (email = '"+str(email)+"');")
+                mysql.connection.commit()
+                post_log('POST /reset-password')
+            else:
+                return {"Error": "Passwords do not match!", "Allow":"No", "Password": password, "Conf Pass": confirmed_password}
         else:
-            return {"Error": "Passwords do not match!", "Allow":"No", "Password": password, "Conf Pass": confirmed_password}
+            return {"Error": "The reset key does you input does not match our records and is therefore incorrect"}
 
     except Exception as e:
         return {
