@@ -248,7 +248,7 @@ def reset_password():
         chars_to_delete = "(',)"
         for character in chars_to_delete:
             mod_reset_key_in_DB = mod_reset_key_in_DB.replace(character, "")
-        encrypted_password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
+        encrypted_password = bcrypt.generate_password_hash(password).decode('utf-8')
         if(mod_reset_key_in_DB == input_reset_key):
             if(password == confirmed_password):
                 cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
@@ -258,7 +258,7 @@ def reset_password():
             else:
                 return {"Error": "Passwords do not match!", "Allow":"No", "Password": password, "Conf Pass": confirmed_password}
         else:
-            return {"Error": str(mod_reset_key_in_DB)+"/"+str(input_reset_key)}
+            return {"Error": str(mod_reset_key_in_DB)+"/"+str(input_reset_key)+"/"+str(encrypted_password)}
 
     except Exception as e:
         return {
