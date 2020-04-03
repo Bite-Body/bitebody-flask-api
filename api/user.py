@@ -232,3 +232,26 @@ def randomPassword(stringLength=8):
     """Generate a random string of letters and digits """
     lettersAndDigits = string.ascii_letters + string.digits
     return ''.join(random.choice(lettersAndDigits) for i in range(stringLength))
+
+
+@user.route('/reset-password', methods = ['POST'])
+def reset_passwrod():
+    try:
+        cur = mysql.connection.cursor()
+        email = request.get_json()['email']
+        password = request.get_json()['password']
+        confirmed_password = request.get_json()['confirmed_password']
+        encrypted_password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
+        if(password == confirmed_password):
+            cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
+            cur.execute("UPDATE BiteBody.Users SET password = '"+password+ "' WHERE (email = '"+str(email)+"');")
+            mysql.connection.commit()
+            post_log('POST /reset-password')
+        else:
+            return {"Error": "Passwords do not match!"}
+
+    except Exception as e:
+        return {
+            "Error": "Something Went Wrong.",
+            "Allow": "no"
+        }
