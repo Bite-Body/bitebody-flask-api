@@ -256,6 +256,7 @@ def reset_password():
                 #cur.execute("UPDATE BiteBody.Users SET password = '"+password+           "' WHERE (email = '"+str(email)+"');")
                 mysql.connection.commit()
                 post_log('POST /reset-password')
+                return {"Allow": "yes"}
             else:
                 return {"Error": "Passwords do not match!", "Allow":"No", "Password": password, "Conf Pass": confirmed_password}
         else:
