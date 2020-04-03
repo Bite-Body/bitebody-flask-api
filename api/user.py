@@ -248,7 +248,7 @@ def reset_passwrod():
             mysql.connection.commit()
             post_log('POST /reset-password')
         else:
-            return {"Error": "Passwords do not match!"}
+            return {"Error": "Passwords do not match!", "Allow":"No", "Password": password, "Conf Pass": confirmed_password}
 
     except Exception as e:
         return {
