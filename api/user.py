@@ -235,7 +235,7 @@ def randomPassword(stringLength=8):
 
 
 @user.route('/reset-password', methods = ['POST'])
-def reset_passwrod():
+def reset_password():
     try:
         cur = mysql.connection.cursor()
         email = request.get_json()['email']
@@ -254,7 +254,7 @@ def reset_passwrod():
             else:
                 return {"Error": "Passwords do not match!", "Allow":"No", "Password": password, "Conf Pass": confirmed_password}
         else:
-            return {"Error": "The reset key does you input does not match our records and is therefore incorrect"}
+            return {"Error": str(reset_key_in_DB)+"/"+str(input_reset_key)}
 
     except Exception as e:
         return {
