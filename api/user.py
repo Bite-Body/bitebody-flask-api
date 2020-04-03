@@ -252,7 +252,7 @@ def reset_password():
         if(mod_reset_key_in_DB == input_reset_key):
             if(password == confirmed_password):
                 cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
-                cur.execute("UPDATE BiteBody.Users SET password = '"+password+ "' WHERE (email = '"+str(email)+"');")
+                cur.execute("UPDATE BiteBody.Users SET password = '"+encrypted_password+ "' WHERE (email = '"+str(email)+"');")
                 mysql.connection.commit()
                 post_log('POST /reset-password')
             else:
