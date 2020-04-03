@@ -263,6 +263,6 @@ def reset_password():
 
     except Exception as e:
         return {
-            "Error": e,
+            "Error": str(e),
             "Allow": "no"
         }
