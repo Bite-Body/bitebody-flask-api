@@ -243,9 +243,9 @@ def reset_password():
         confirmed_password = request.get_json()['confirmed_password']
         input_reset_key = request.get_json()['reset_key']
         cur.execute ("SELECT password_reset_key FROM BiteBody.Users WHERE email = '"+email+"';")
-        raw_reset_key_in_DB = cur.fetchone()
+        raw_reset_key_in_DB = str(cur.fetchone())
         mod_reset_key_in_DB = raw_reset_key_in_DB
-        chars_to_delete = "(',"
+        chars_to_delete = "(',)"
         for character in chars_to_delete:
             mod_reset_key_in_DB = mod_reset_key_in_DB.replace(character, "")
         encrypted_password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
