@@ -110,7 +110,10 @@ def create_user():
         last_name = request.get_json()['last_name']
         email = request.get_json()['email']
 
-        cur.execute("SELECT email FROM BiteBody.Users WHERE email = '" + email +"';")
+        
+        cur.execute("SELECT email FROM BiteBody.Users WHERE email = %(email)s", {'email': email});
+       
+        
         emailFound = cur.fetchone()
         print("Email Found value: ", emailFound)
         if(emailFound):
@@ -142,7 +145,7 @@ def login():
         cur = mysql.connection.cursor()
         email = request.get_json()['email']
         password = request.get_json()['password']
-        cur.execute("SELECT * FROM BiteBody.Users where email = '" + str(email) + "'")
+        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email});
         rv = cur.fetchone()
         result = ''
 
@@ -166,8 +169,8 @@ def login():
 def forgot_password():
     try:
         cur = mysql.connection.cursor()
-        getter = request.get_json()['email']
-        cur.execute("SELECT * FROM BiteBody.Users where email = '" + str(getter) + "'")
+        email = request.get_json()['email']
+        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email});
         email_exists = cur.fetchone()
         if(email_exists):
             port = 465  # For SSL
@@ -178,14 +181,14 @@ def forgot_password():
             password = "tester_account404"
 
             newTempPass = randomPassword()
-            cur.execute("UPDATE BiteBody.Users SET password_reset_key = '"+newTempPass+ "' WHERE (email = '"+str(getter)+"');")
+            cur.execute("UPDATE BiteBody.Users SET password_reset_key = '"+newTempPass+ "' WHERE email = %(email)s", {'email': email});
             # cur.execute("INSERT INTO BiteBody.Users (password_reset_key) VALUES ('" 
             #     + newTempPass +"');")
             mysql.connection.commit() #necessary for data modification
             message = MIMEMultipart("alternative")
             message["subject"] = "Account Recovery For Bitebody.xyz"
             message["From"] = sender
-            message["To"] = getter
+            message["To"] = email
             #trivial
 
             html = """\
@@ -217,7 +220,7 @@ def forgot_password():
 
             with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
                 server.login(sender, password)
-                server.sendmail(sender,getter,message.as_string())
+                server.sendmail(sender,email,message.as_string())
                 # TODO: Send email here
             
             post_log('POST /users/forgot-password')
@@ -242,7 +245,7 @@ def reset_password():
         password = request.get_json()['password']
         confirmed_password = request.get_json()['confirmed_password']
         input_reset_key = request.get_json()['reset_key']
-        cur.execute ("SELECT password_reset_key FROM BiteBody.Users WHERE email = '"+email+"';")
+        cur.execute ("SELECT password_reset_key FROM BiteBody.Users WHERE email = %(email)s", {'email': email});
         raw_reset_key_in_DB = str(cur.fetchone())
         mod_reset_key_in_DB = raw_reset_key_in_DB
         chars_to_delete = "(',)"
@@ -252,7 +255,7 @@ def reset_password():
         if(mod_reset_key_in_DB == input_reset_key):
             if(password == confirmed_password):
                 cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
-                cur.execute("UPDATE BiteBody.Users SET password = '"+encrypted_password+ "' WHERE (email = '"+str(email)+"');")
+                cur.execute("UPDATE BiteBody.Users SET password = '"+encrypted_password+ "' WHERE email = %(email)s", {'email': email});
                 #cur.execute("UPDATE BiteBody.Users SET password = '"+password+           "' WHERE (email = '"+str(email)+"');")
                 mysql.connection.commit()
                 post_log('POST /reset-password')
