@@ -116,13 +116,14 @@ def create_user():
         username = request.get_json()['username']
         
         cur.execute("SELECT email FROM BiteBody.Users WHERE email = %(email)s", {'email': email})
-        
         emailFound = cur.fetchone()
-        print("Email Found value: ", emailFound)
 
-        if(emailFound):
+        cur.execute("SELECT email FROM BiteBody.Users WHERE username = %(username)s", {'username': username})
+        usernameFound = cur.fetchone()
+
+        if(emailFound or usernameFound):
             post_log('POST /users FAILED')
-            return {"Error": "Can't add already existing email"}
+            return {"Error": "Can't add already existing email or username"}
         else:
             password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
             cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) VALUES ('" 
