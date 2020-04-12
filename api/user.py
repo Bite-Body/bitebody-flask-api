@@ -150,12 +150,13 @@ def create_user():
 def login():
     try:
         cur = mysql.connection.cursor()
-        email = request.get_json()['email']
+        email_or_password = request.get_json()['email_or_password']
+        
         password = request.get_json()['password']
-        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email})
+        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email_or_password})
         rv = cur.fetchone()
 
-        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': username})
+        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': email_or_password})
         rv_username = cur.fetchone()
 
         result = ''
@@ -169,7 +170,7 @@ def login():
         else:
             raise Exception('Passwords do not match')
         
-        custom_msg = 'POST /users/login for ' + email
+        custom_msg = 'POST /users/login for ' + email_or_password
         post_log(custom_msg)
 
         return result
