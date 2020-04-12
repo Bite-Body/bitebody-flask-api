@@ -150,21 +150,34 @@ def create_user():
 def login():
     try:
         cur = mysql.connection.cursor()
-        username = request.get_json()['username']
+        username_or_email = request.get_json()['username_or_email']
         password = request.get_json()['password']
         
-        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': username})
+        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': username_or_email})
         rv = cur.fetchone()
+
+        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': username_or_email})
+        rv_email = cur.fetchone()
 
         result = ''
 
-        if bcrypt.check_password_hash(rv[4], password):
-            access_token = create_access_token(identity = {'first_name': rv[1],'last_name': rv[2],'email': rv[3],'id': rv[0], 'username': rv[5]})
-            result = access_token
-        else:
-            raise Exception('Passwords do not match')
+        try:
+            if bcrypt.check_password_hash(rv[4], password):
+                access_token = create_access_token(identity = {'first_name': rv[1],'last_name': rv[2],'email': rv[3],'id': rv[0], 'username': rv[5]})
+                result = access_token
+            else:
+                raise Exception('Passwords do not match')
+        except:
+            try:
+                if bcrypt.check_password_hash(rv_email[4], password):
+                    access_token = create_access_token(identity = {'first_name': rv_email[1],'last_name': rv_email[2],'email': rv_email[3],'id': rv_email[0], 'username': rv_email[5]})
+                    result = access_token
+                else:
+                    raise Exception('Passwords do not match')
+            except:
+                raise Exception('Passwords do not match')
         
-        custom_msg = 'POST /users/login for ' + username
+        custom_msg = 'POST /users/login for ' + username_or_email
         post_log(custom_msg)
 
         return result
