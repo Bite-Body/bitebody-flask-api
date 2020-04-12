@@ -155,9 +155,11 @@ def login():
         password = request.get_json()['password']
         cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email_or_user})
         rv = cur.fetchone()
+        print(rv)
 
         cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': email_or_user})
         rv_username = cur.fetchone()
+        print(rv_username)
 
         result = ''
 
@@ -175,6 +177,7 @@ def login():
 
         return result
     except Exception as e:
+        print(e)
         return {
             "Error": "Incorrect email or password.",
             "Allow": "no"
