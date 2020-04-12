@@ -30,6 +30,7 @@ def get_all_users():
             temp_user['first_name'] = row[1]
             temp_user['last_name'] = row[2]
             temp_user['email'] = row[3]
+            temp_user['username'] = row[5]
             all_users.append(temp_user)
 
         post_log('GET /users/all')
@@ -48,6 +49,7 @@ def find_user(userID):
             'first_name':row[1],
             'last_name':row[2],
             'email' : row[3],
+            'username' : row[5],
             'id' : row[0]
         }
 
@@ -69,7 +71,7 @@ def delete_user(userID):
             cur.execute("DELETE FROM BiteBody.Users WHERE id = " + str(userID) + ";")
             mysql.connection.commit()
             deleted = {
-                'id' : userID 
+                'id' : userID
             }
 
             post_log('DELETE /users/<int:userID>')
@@ -85,14 +87,16 @@ def update_user_info(userID):
         last_name = request.get_json()['last_name']
         email = request.get_json()['email']
         password = request.get_json()['password']
-        cur.execute("UPDATE BiteBody.Users SET first_name = '"+str(first_name) + "',last_name = '" + str(last_name)+ "',email = '"+ str(email)+"',password = '"+ str(password) + 
+        username = request.get_json()['username']
+        cur.execute("UPDATE BiteBody.Users SET first_name = '"+str(first_name) + "',last_name = '" + str(last_name)+ "',email = '"+ str(email)+ "',password = '"+ str(password) + "',username = '"+ str(username) + 
         "'WHERE id = "+ str(userID)+";")
         mysql.connection.commit()
         updated = {
             'first_name':first_name,
             'last_name':last_name,
             'email' : email,
-            'password' : password
+            'password' : password,
+            'username' : username
         }
         
 
@@ -109,28 +113,31 @@ def create_user():
         first_name = request.get_json()['first_name']
         last_name = request.get_json()['last_name']
         email = request.get_json()['email']
-
+        username = request.get_json()['username']
         
-        cur.execute("SELECT email FROM BiteBody.Users WHERE email = %(email)s", {'email': email});
-       
+        cur.execute("SELECT email FROM BiteBody.Users WHERE email = %(email)s", {'email': email})
         
         emailFound = cur.fetchone()
         print("Email Found value: ", emailFound)
+
         if(emailFound):
+            post_log('POST /users FAILED')
             return {"Error": "Can't add already existing email"}
         else:
             password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
-            cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password) VALUES ('" 
+            cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) VALUES ('" 
                 + first_name + "', '" 
                 + last_name + "', '" 
                 + email + "', '" 
-                + password + "');")
+                + password + "', '" 
+                + username + "');")
             mysql.connection.commit()
             posted = {
                 'first_name' : first_name, 
                 'last_name' : last_name,
                 'email' : email,
-                'password' : password
+                'password' : password,
+                'username' : username
             }
 
             post_log('POST /users')
@@ -145,20 +152,27 @@ def login():
         cur = mysql.connection.cursor()
         email = request.get_json()['email']
         password = request.get_json()['password']
-        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email});
+        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email})
         rv = cur.fetchone()
+
+        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': username})
+        rv_username = cur.fetchone()
+
         result = ''
 
         if bcrypt.check_password_hash(rv[4], password):
-            access_token = create_access_token(identity = {'first_name': rv[1],'last_name': rv[2],'email': rv[3],'id': rv[0]})
+            access_token = create_access_token(identity = {'first_name': rv[1],'last_name': rv[2],'email': rv[3],'id': rv[0], 'username': rv[5]})
+            result = access_token
+        elif bcrypt.check_password_hash(rv_username[4], password)
+            access_token = create_access_token(identity = {'first_name': rv_username[1],'last_name': rv_username[2],'email': rv_username[3],'id': rv_username[0], 'username': rv_username[5]})
             result = access_token
         else:
             raise Exception('Passwords do not match')
         
         custom_msg = 'POST /users/login for ' + email
         post_log(custom_msg)
-        return result
 
+        return result
     except Exception as e:
         return {
             "Error": "Incorrect email or password.",
@@ -170,7 +184,7 @@ def forgot_password():
     try:
         cur = mysql.connection.cursor()
         email = request.get_json()['email']
-        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email});
+        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email})
         email_exists = cur.fetchone()
         if(email_exists):
             port = 465  # For SSL
@@ -181,7 +195,7 @@ def forgot_password():
             password = "tester_account404"
 
             newTempPass = randomPassword()
-            cur.execute("UPDATE BiteBody.Users SET password_reset_key = '"+newTempPass+ "' WHERE email = %(email)s", {'email': email});
+            cur.execute("UPDATE BiteBody.Users SET password_reset_key = '"+newTempPass+ "' WHERE email = %(email)s", {'email': email})
             # cur.execute("INSERT INTO BiteBody.Users (password_reset_key) VALUES ('" 
             #     + newTempPass +"');")
             mysql.connection.commit() #necessary for data modification
@@ -245,7 +259,7 @@ def reset_password():
         password = request.get_json()['password']
         confirmed_password = request.get_json()['confirmed_password']
         input_reset_key = request.get_json()['reset_key']
-        cur.execute ("SELECT password_reset_key FROM BiteBody.Users WHERE email = %(email)s", {'email': email});
+        cur.execute ("SELECT password_reset_key FROM BiteBody.Users WHERE email = %(email)s", {'email': email})
         raw_reset_key_in_DB = str(cur.fetchone())
         mod_reset_key_in_DB = raw_reset_key_in_DB
         chars_to_delete = "(',)"
@@ -255,7 +269,7 @@ def reset_password():
         if(mod_reset_key_in_DB == input_reset_key):
             if(password == confirmed_password):
                 cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
-                cur.execute("UPDATE BiteBody.Users SET password = '"+encrypted_password+ "' WHERE email = %(email)s", {'email': email});
+                cur.execute("UPDATE BiteBody.Users SET password = '"+encrypted_password+ "' WHERE email = %(email)s", {'email': email})
                 #cur.execute("UPDATE BiteBody.Users SET password = '"+password+           "' WHERE (email = '"+str(email)+"');")
                 mysql.connection.commit()
                 post_log('POST /reset-password')
