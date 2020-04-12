@@ -150,23 +150,15 @@ def create_user():
 def login():
     try:
         cur = mysql.connection.cursor()
-        email_or_user = request.get_json()['email_or_user']
-        
+        username = request.get_json()['username']
         password = request.get_json()['password']
-        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email_or_user})
-        rv = cur.fetchone()
-        print(rv)
 
-        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': email_or_user})
+        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': username})
         rv_username = cur.fetchone()
-        print(rv_username)
 
         result = ''
 
-        if bcrypt.check_password_hash(rv[4], password):
-            access_token = create_access_token(identity = {'first_name': rv[1],'last_name': rv[2],'email': rv[3],'id': rv[0], 'username': rv[5]})
-            result = access_token
-        elif bcrypt.check_password_hash(rv_username[4], password):
+        if bcrypt.check_password_hash(rv_username[4], password):
             access_token = create_access_token(identity = {'first_name': rv_username[1],'last_name': rv_username[2],'email': rv_username[3],'id': rv_username[0], 'username': rv_username[5]})
             result = access_token
         else:
