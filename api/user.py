@@ -153,7 +153,7 @@ def login():
         username = request.get_json()['username']
         password = request.get_json()['password']
         
-        cur.execute("SELECT * FROM BiteBody.Users where email = %(username)s", {'username': username})
+        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': username})
         rv = cur.fetchone()
 
         result = ''
