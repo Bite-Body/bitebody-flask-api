@@ -163,7 +163,7 @@ def login():
         if bcrypt.check_password_hash(rv[4], password):
             access_token = create_access_token(identity = {'first_name': rv[1],'last_name': rv[2],'email': rv[3],'id': rv[0], 'username': rv[5]})
             result = access_token
-        elif bcrypt.check_password_hash(rv_username[4], password)
+        elif bcrypt.check_password_hash(rv_username[4], password):
             access_token = create_access_token(identity = {'first_name': rv_username[1],'last_name': rv_username[2],'email': rv_username[3],'id': rv_username[0], 'username': rv_username[5]})
             result = access_token
         else:
