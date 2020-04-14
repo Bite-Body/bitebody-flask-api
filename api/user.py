@@ -121,6 +121,10 @@ def create_user():
         cur.execute("SELECT email FROM BiteBody.Users WHERE username = %(username)s", {'username': username})
         usernameFound = cur.fetchone()
 
+
+        if '@' not in email:
+            return {"Error": "Not a valid email"}
+
         if(emailFound or usernameFound):
             post_log('POST /users FAILED')
             return {"Error": "Can't add already existing email or username"}
@@ -194,6 +198,10 @@ def forgot_password():
     try:
         cur = mysql.connection.cursor()
         email = request.get_json()['email']
+
+        if '@' not in email:
+            return {"Error": "Not a valid email"}
+
         cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email})
         email_exists = cur.fetchone()
         if(email_exists):
@@ -266,6 +274,10 @@ def reset_password():
     try:
         cur = mysql.connection.cursor()
         email = request.get_json()['email']
+
+        if '@' not in email:
+            return {"Error": "Not a valid email"}
+
         password = request.get_json()['password']
         confirmed_password = request.get_json()['confirmed_password']
         input_reset_key = request.get_json()['reset_key']
