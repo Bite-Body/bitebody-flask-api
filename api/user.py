@@ -86,7 +86,7 @@ def update_user_info(userID):
         first_name = request.get_json()['first_name']
         last_name = request.get_json()['last_name']
         email = request.get_json()['email']
-        password = request.get_json()['password']
+        password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
         username = request.get_json()['username']
         cur.execute("UPDATE BiteBody.Users SET first_name = '"+str(first_name) + "',last_name = '" + str(last_name)+ "',email = '"+ str(email)+ "',password = '"+ str(password) + "',username = '"+ str(username) + 
         "'WHERE id = "+ str(userID)+";")
