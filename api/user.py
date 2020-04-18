@@ -137,6 +137,13 @@ def create_user():
                 + password + "', '" 
                 + username + "');")
             mysql.connection.commit()
+            cur.execute("INSERT INTO BiteBody.Accounts_In_Limbo (first_name, last_name, email, password, username) VALUES ('" 
+                + first_name + "', '" 
+                + last_name + "', '" 
+                + email + "', '" 
+                + password + "', '" 
+                + username + "');")
+            mysql.connection.commit()
             posted = {
                 'first_name' : first_name, 
                 'last_name' : last_name,
