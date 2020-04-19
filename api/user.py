@@ -223,7 +223,7 @@ def finalize_user():
         mysql.connection.commit()
         #if(cur.fetchone)
         #{
-        cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':reg_key})
+        cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':confirmation_key})
         mysql.connection.commit()
         cur.execute("DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
         mysql.connection.commit()
