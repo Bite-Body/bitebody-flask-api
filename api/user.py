@@ -231,11 +231,12 @@ def finalize_user():
             #erase the entry querried in line 222 from imbo table
         #else:
             #print warning saying that they need to type in correct registration key
+        return {"Allow": "yes"}
     except Exception as e:
         print(e)
         return {
-            "Error": "Incorrect email or password.",
-            "Allow": "no"
+            "Allow" : "no",
+            "Error Message": str(e)
         }
 
 @user.route('/login', methods=['POST'])
