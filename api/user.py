@@ -161,7 +161,7 @@ def create_user():
                 <p>Thank you for signing up for a BITEBODY account! <br>
                     <a href="https://www.google.com">CLICK RIGHT HERE</a> 
                     to complete your account registration!
-                    
+
                     Your registration code is: <b>{conf_key}</b> 
                     Make sure to enter it when prompted.
                 </p>
@@ -213,6 +213,24 @@ def create_user():
     except Exception as e:
         print(e)
         return {"Error": "Unable to create this user.", "ErrorMessage": str(e)}
+
+@user.route('finalize-registration', methods=['POST'])
+def finalize_user():
+    try:
+        cur = mysql.connection.cursor()
+        provided_reg_key = request.get_json()['regKey']
+        cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': regKey})
+        #If above returns something (NOT NULL):
+            #copy that entire content of that row into the USERS table
+            #erase the entry querried in line 222 from imbo table
+        #else:
+            #print warning saying that they need to type in correct registration key
+     except Exception as e:
+        print(e)
+        return {
+            "Error": "Incorrect email or password.",
+            "Allow": "no"
+        }
 
 @user.route('/login', methods=['POST'])
 def login():
