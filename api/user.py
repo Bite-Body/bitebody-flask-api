@@ -218,7 +218,7 @@ def create_user():
 def finalize_user():
     try:
         cur = mysql.connection.cursor()
-        reg_key = request.get_json()['regKey']
+        reg_key = request.get_json()['reg_key']
         cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': reg_key})
         #if(cur.fetchone)
         #{
