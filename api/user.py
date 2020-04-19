@@ -220,13 +220,11 @@ def finalize_user():
         cur = mysql.connection.cursor()
         reg_key = request.get_json()['regKey']
         cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': reg_key})
-        res = cur.fetchone()
         #if(cur.fetchone)
         #{
-            INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username 
-            FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = 'u0yUt1gw' #COPY DATA to USERS
+        cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':reg_key})
 
-            DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = "u0yUt1gw" #DELETE DATA FROM LIMBO TABLE
+        cur.execute("DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': reg_key})
         #}
         #If above returns something (NOT NULL):
             #copy that entire content of that row into the USERS table
