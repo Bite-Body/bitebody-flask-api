@@ -218,14 +218,22 @@ def create_user():
 def finalize_user():
     try:
         cur = mysql.connection.cursor()
-        provided_reg_key = request.get_json()['regKey']
-        cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': regKey})
+        reg_key = request.get_json()['regKey']
+        cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': reg_key})
+        res = cur.fetchone()
+        #if(cur.fetchone)
+        #{
+            INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username 
+            FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = 'u0yUt1gw' #COPY DATA to USERS
+
+            DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = "u0yUt1gw" #DELETE DATA FROM LIMBO TABLE
+        #}
         #If above returns something (NOT NULL):
             #copy that entire content of that row into the USERS table
             #erase the entry querried in line 222 from imbo table
         #else:
             #print warning saying that they need to type in correct registration key
-     except Exception as e:
+    except Exception as e:
         print(e)
         return {
             "Error": "Incorrect email or password.",
