@@ -158,10 +158,11 @@ def create_user():
             html = """\
             <html>
                 <body>
-                <p>YThank you for signing up to BITEBODY.XYZ! <br>
+                <p>Thank you for signing up for a BITEBODY account! <br>
                     <a href="https://www.google.com">CLICK RIGHT HERE</a> 
-                    to complete your account registration
-                    Your Temp Password is: <b>{conf_key}</b> 
+                    to complete your account registration!
+                    
+                    Your registration code is: <b>{conf_key}</b> 
                     Make sure to enter it when prompted.
                 </p>
                 </body>
