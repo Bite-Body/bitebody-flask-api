@@ -218,13 +218,15 @@ def create_user():
 def finalize_user():
     try:
         cur = mysql.connection.cursor()
-        reg_key = request.get_json()['reg_key']
-        cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': reg_key})
+        confirmation_key = request.get_json()['confirmation_key']
+        cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
+        mysql.connection.commit()
         #if(cur.fetchone)
         #{
         cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':reg_key})
-
-        cur.execute("DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': reg_key})
+        mysql.connection.commit()
+        cur.execute("DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
+        mysql.connection.commit()
         #}
         #If above returns something (NOT NULL):
             #copy that entire content of that row into the USERS table
