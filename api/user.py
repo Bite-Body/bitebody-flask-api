@@ -130,13 +130,7 @@ def create_user():
             return {"Error": "Can't add already existing email or username"}
         else:
             password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
-            cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) VALUES ('" 
-                + first_name + "', '" 
-                + last_name + "', '" 
-                + email + "', '" 
-                + password + "', '" 
-                + username + "');")
-            mysql.connection.commit()
+
             cur.execute("INSERT INTO BiteBody.Accounts_In_Limbo (first_name, last_name, email, password, username) VALUES ('" 
                 + first_name + "', '" 
                 + last_name + "', '" 
@@ -144,6 +138,67 @@ def create_user():
                 + password + "', '" 
                 + username + "');")
             mysql.connection.commit()
+
+            port = 465  # For SSL
+            smtp_server = "smtp.gmail.com"
+            sender = "bitebodyxyztest@gmail.com"
+            Email_Password = "tester_account404"
+            conf_key = randomPassword()
+
+            ##START
+            cur.execute("UPDATE BiteBody.Accounts_In_Limbo SET confirmation_key = '"+conf_key+ "' WHERE email = %(email)s", {'email': email})
+
+            mysql.connection.commit() #necessary for data modification
+            message = MIMEMultipart("alternative")
+            message["subject"] = "Account Recovery For Bitebody.xyz"
+            message["From"] = sender
+            message["To"] = email
+
+
+            html = """\
+            <html>
+                <body>
+                <p>YThank you for signing up to BITEBODY.XYZ! <br>
+                    <a href="https://www.google.com">CLICK RIGHT HERE</a> 
+                    to complete your account registration
+                    Your Temp Password is: <b>{conf_key}</b> 
+                    Make sure to enter it when prompted.
+                </p>
+                </body>
+            </html>
+            """.format(conf_key = conf_key)
+
+            # Turn these into plain/html MIMEText objects
+            #part1 = MIMEText(text, "plain")
+            part2 = MIMEText(html, "html")
+
+            # Add HTML/plain-text parts to MIMEMultipart message
+            # The email client will try to render the last part first
+            #message.attach(part1)
+            message.attach(part2)
+
+
+            # Create a secure SSL context
+            context = ssl.create_default_context()
+
+
+            with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+                server.login(sender, Email_Password)
+                server.sendmail(sender,email,message.as_string())
+                # TODO: Send email here
+            ##END
+
+
+
+            
+            cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) VALUES ('" 
+                + first_name + "', '" 
+                + last_name + "', '" 
+                + email + "', '" 
+                + password + "', '" 
+                + username + "');")
+            mysql.connection.commit()
+            
             posted = {
                 'first_name' : first_name, 
                 'last_name' : last_name,
