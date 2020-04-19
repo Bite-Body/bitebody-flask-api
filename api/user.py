@@ -236,7 +236,7 @@ def finalize_user():
         print(e)
         return {
             "Allow" : "no",
-            "Error Message": str(e)
+            "Error": str(e)
         }
 
 @user.route('/login', methods=['POST'])
