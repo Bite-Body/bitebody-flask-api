@@ -150,7 +150,7 @@ def create_user():
 
             mysql.connection.commit() #necessary for data modification
             message = MIMEMultipart("alternative")
-            message["subject"] = "Account Recovery For Bitebody.xyz"
+            message["subject"] = "Finish Registering for BITEBODY.XYZ"
             message["From"] = sender
             message["To"] = email
 
@@ -159,7 +159,7 @@ def create_user():
             <html>
                 <body>
                 <p>Thank you for signing up for a BITEBODY account! <br>
-                    <a href="https://www.google.com">CLICK RIGHT HERE</a> 
+                    <a href="https://www.bitebody.xyz/finalize-registration">CLICK RIGHT HERE</a> 
                     to complete your account registration!
 
                     Your registration code is: <b>{conf_key}</b> 
