@@ -59,6 +59,35 @@ def find_workout(wkoutID):
 
         return {"Error": "Unable to retrieve this workout.", "ErrorMessage": str(e)}
 
+@workout.route('/<string:workout_type>', methods=['GET'])
+def find_workout_by_type(workout_type):
+    try:
+        print(workout_type)
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM BiteBody.Workouts WHERE main_muscle_group = \"" + str(workout_type) + "\";")
+        all_workouts = []
+        rows = cur.fetchall()
+        for row in rows:
+            temp_workout = {}
+            temp_workout['id'] = row[0]
+            temp_workout['workout_name'] = row[1] 
+            temp_workout['main_muscle_group'] = row[2]
+            temp_workout['detailed_muscle_group'] = row[3]
+            temp_workout['other_muscle_groups'] = row[4]
+            temp_workout['type'] = row[5]
+            temp_workout['mechanics'] = row[6]
+            temp_workout['equipment'] = row[7]
+            temp_workout['difficulty'] = row[8]
+            temp_workout['exercise_steps'] = row[9]
+            temp_workout['image_path'] = row[10]
+            all_workouts.append(temp_workout)
+
+        post_log('GET /workouts/<string:workout_type>')
+        return Response(json.dumps({"workouts": all_workouts, "code": 200}), mimetype='application/json')
+    except Exception as e:
+        return {"Error": "Unable to retrieve this workout.", "ErrorMessage": str(e)}
+
+
 @workout.route('/<int:wkoutID>', methods=['DELETE'])
 def delete_workout(wkoutID):
     try:

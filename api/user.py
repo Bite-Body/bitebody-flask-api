@@ -229,9 +229,9 @@ def finalize_user():
         #If above returns something (NOT NULL):
             #copy that entire content of that row into the USERS table
             #erase the entry querried in line 222 from imbo table
-        else:
+        #else:
             #print warning saying that they need to type in correct registration key
-        return {"Allow": "no", "Error": "You need to type in theregistration key"}
+        return {"Allow": "no", "Error": "You need to type in the registration key"}
     except Exception as e:
         print(e)
         return {
