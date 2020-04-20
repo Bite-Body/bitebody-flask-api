@@ -231,7 +231,7 @@ def finalize_user():
             #erase the entry querried in line 222 from imbo table
         else:
             #print warning saying that they need to type in correct registration key
-        return {"Allow": "no", "Error": "You need to type in theregistration key"}
+            return {"Allow": "no", "Error": "You need to type in theregistration key"}
     except Exception as e:
         print(e)
         return {
