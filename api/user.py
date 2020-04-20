@@ -188,17 +188,14 @@ def create_user():
                 server.sendmail(sender,email,message.as_string())
                 # TODO: Send email here
             ##END
-
-
-
             
-            cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) VALUES ('" 
-                + first_name + "', '" 
-                + last_name + "', '" 
-                + email + "', '" 
-                + password + "', '" 
-                + username + "');")
-            mysql.connection.commit()
+            # cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) VALUES ('" 
+            #     + first_name + "', '" 
+            #     + last_name + "', '" 
+            #     + email + "', '" 
+            #     + password + "', '" 
+            #     + username + "');")
+            # mysql.connection.commit()
             
             posted = {
                 'first_name' : first_name, 
@@ -221,19 +218,20 @@ def finalize_user():
         confirmation_key = request.get_json()['confirmation_key']
         cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
         mysql.connection.commit()
-        #if(cur.fetchone)
-        #{
-        cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':confirmation_key})
-        mysql.connection.commit()
-        cur.execute("DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
-        mysql.connection.commit()
-        #}
+        if(cur.fetchone):
+        
+            cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':confirmation_key})
+            mysql.connection.commit()
+            cur.execute("DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
+            mysql.connection.commit()
+            return {"Allow": "yes"}
+        
         #If above returns something (NOT NULL):
             #copy that entire content of that row into the USERS table
             #erase the entry querried in line 222 from imbo table
-        #else:
+        else:
             #print warning saying that they need to type in correct registration key
-        return {"Allow": "yes"}
+        return {"Allow": "no", "Error": "You need to type in theregistration key"}
     except Exception as e:
         print(e)
         return {
