@@ -159,9 +159,9 @@ def create_user():
             <html>
                 <body>
                 <p>Thank you for signing up for a BITEBODY account! <br>
-                    <a href="https://www.bitebody.xyz/finalize-registration">CLICK RIGHT HERE</a> 
+                    <a href="https://www.bitebody.xyz/finalize-registration">CLICK RIGHT HERE </a> 
                     to complete your account registration!
-                    Your registration code is: <b>{conf_key}</b> 
+                    Your registration code is:<b>{conf_key}</b> <br />
                     Make sure to enter it when prompted.
                 </p>
                 </body>
@@ -315,8 +315,8 @@ def forgot_password():
                 <body>
                 <p>You are receiving this email because your recent account activity shows you are in need of a replacement password.<br>
                     <a href="https://www.bitebody.xyz/reset-password">CLICK RIGHT HERE</a> 
-                    to reset your account's password.
-                    Your Temp Password is: <b>{newTempPass}</b> 
+                    to reset your account's password. <br />
+                    Your Temp Password is: <b>{newTempPass}</b> <br />
                     Make sure to enter it when prompted.
                 </p>
                 </body>
