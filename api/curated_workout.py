@@ -26,7 +26,7 @@ def get_all_workouts():
             temp_workout['workout_pdf'] = row[8]
             all_workouts.append(temp_workout)
 
-        post_log('GET /curated_workouts/all')
+        post_log('GET /curated_workout/all')
         return Response(json.dumps({"curated_workouts": all_workouts, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrive all curated workouts.", "ErrorMessage": str(e)}
@@ -52,7 +52,7 @@ def find_workout_by_type(workout_type):
             temp_workout['workout_pdf'] = row[8]
             all_workouts.append(temp_workout)
 
-        post_log('GET /curated_workouts/<string:workout_type>')
+        post_log('GET /curated_workout/<string:workout_type>')
         return Response(json.dumps({"curated_workout": all_workouts, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrieve this workout.", "ErrorMessage": str(e)}
@@ -75,7 +75,7 @@ def find_workout(wkoutID):
             'workout_pdf': row[8],
         }
 
-        post_log('GET /curated_workouts/<int:wkoutID>')
+        post_log('GET /curated_workout/<int:wkoutID>')
         return Response(json.dumps({"curated_workout": workout, "code": 200}), mimetype='application/json')
     except Exception as e:
 
@@ -91,7 +91,7 @@ def delete_workout(wkoutID):
             'id' : wkoutID
         }
 
-        post_log('DELETE /curated_workouts/<int:wkoutID>')
+        post_log('DELETE /curated_workout/<int:wkoutID>')
         return Response(json.dumps({"deleted": deleted, "code": 200}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to delete this workout.", "ErrorMessage": str(e)}
