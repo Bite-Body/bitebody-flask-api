@@ -10,7 +10,7 @@ from manage import mysql
 def get_all_workouts():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * From BiteBody.'Curated Workouts';")
+        cur.execute("SELECT * From BiteBody.curated_workout;")
         all_workouts = []
         rows = cur.fetchall()
         for row in rows:
