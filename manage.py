@@ -40,6 +40,7 @@ if __name__ == '__main__':
     app.register_blueprint(youtube_video, url_prefix="/youtube_videos")
     app.register_blueprint(meal, url_prefix="/meals")
     app.register_blueprint(calorie_calc, url_prefix="/calories")
+    app.register_blueprint(calorie_calc, url_prefix="/curated_workouts")
 
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
