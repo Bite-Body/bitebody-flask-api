@@ -24,6 +24,7 @@ def get_all_workouts():
             temp_workout['time_per_workout'] = row[6]
             temp_workout['targeted_gender'] = row[7]
             temp_workout['workout_pdf'] = row[8]
+            temp_workout['image'] = row[9]
             all_workouts.append(temp_workout)
 
         post_log('GET /curated_workout/all')
@@ -36,7 +37,7 @@ def find_workout_by_type(workout_type):
     try:
         print(workout_type)
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Curated Workouts WHERE workout_type = \"" + str(workout_type) + "\";")
+        cur.execute("SELECT * FROM BiteBody.curated_workout WHERE workout_type = \"" + str(workout_type) + "\";")
         all_workouts = []
         rows = cur.fetchall()
         for row in rows:
@@ -61,7 +62,7 @@ def find_workout_by_type(workout_type):
 def find_workout(wkoutID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Curated Workouts WHERE id = "+str(wkoutID)+";")
+        cur.execute("SELECT * FROM BiteBody.curated_workout WHERE id = "+str(wkoutID)+";")
         row = cur.fetchone()
         workout = {
             'id' : row[0],
@@ -85,7 +86,7 @@ def find_workout(wkoutID):
 def delete_workout(wkoutID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM BiteBody.Curated Workouts WHERE id = " + str(wkoutID) + ";")
+        cur.execute("DELETE FROM BiteBody.curated_workout WHERE id = " + str(wkoutID) + ";")
         mysql.connection.commit()
         deleted = {
             'id' : wkoutID
@@ -111,25 +112,23 @@ def update_workout_info(wkoutID):
         workout_pdf = request.get_json()['workout_pdf']
         #STOPPED HERE
 
-        cur.execute("UPDATE BiteBody.Workouts SET workout_name = '"+str(workout_name) + "',main_muscle_group = '" + str(main_muscle_group)+ "',detailed_muscle_group = '"+ 
-        str(detailed_muscle_group)+"',other_muscle_groups = '"+ str(other_muscle_groups) + "',type = '" + str(type_)+"',mechanics = '" + str(mechanics)+"',equipment = '" + str(equipment)+ "',difficulty = '" + str(difficulty)+ "',excercise_steps = '" + str(excercise_steps)+ "',image_path = '" + str(image_path)+
+        cur.execute("UPDATE BiteBody.curated_workout SET name = '"+str(name) + "',goal = '" + str(goal)+ "',workout_type = '"+ 
+        str(workout_type)+"',level = '"+ str(level) + "',days_per_week = '" + str(days_per_week)+"',time_per_workout = '" + str(time_per_workout)+"',targeted_gender = '" + str(targeted_gender)+ "',workout_pdf = '" + str(workout_pdf)+ 
         "'WHERE id = "+ str(wkoutID)+";")
         mysql.connection.commit()
         workout = { 
             'id' : wkoutID,
-            'workout_name': workout_name,
-            'main_muscle_group': main_muscle_group,
-            'detailed_muscle_group' : detailed_muscle_group,
-            'other_muscle_groups': other_muscle_groups,
-            'type': type_,
-            'mechanics': mechanics,
-            'equipment': equipment,
-            'difficulty': difficulty,
-            'excercise_steps': excercise_steps,
-            'image_path': image_path
+            'name': name,
+            'goal': goal,
+            'workout_type' : workout_type,
+            'level': level,
+            'days_per_week': days_per_week,
+            'time_per_week': time_per_week,
+            'targeted_gender': targeted_gender,
+            'workout_pdf': workout_pdf,
         }
 
-        post_log('PUT /workouts/<int:wkoutID>')
+        post_log('PUT /curated_workout/<int:wkoutID>')
         return Response(json.dumps({"updated": workout, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to update this workout.", "ErrorMessage": str(e)}
