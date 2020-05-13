@@ -42,6 +42,7 @@ if __name__ == '__main__':
     app.register_blueprint(meal, url_prefix="/meals")
     app.register_blueprint(calorie_calc, url_prefix="/calories")
     app.register_blueprint(curated_workout, url_prefix="/curated_workout")
+    app.register_blueprint(curated_workout, url_prefix="/Weight_Loss")
 
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
