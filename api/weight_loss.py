@@ -2,16 +2,16 @@ from flask import Blueprint, Response, json, request
 from flask_mysqldb import MySQL
 from logger import post_log
 
-curated_workout = Blueprint("Weight_Loss", __name__)
+weight_loss = Blueprint("weight_loss", __name__)
 
 from manage import mysql
 
-@curated_workout.route('/all', methods=['GET'])
-def get_all_workouts():
+@weight_loss.route('/all', methods=['GET'])
+def get_all_weight_loss():
     try:
         cur = mysql.connection.cursor()
         cur.execute("SELECT * From BiteBody.Weight_Loss;")
-        all_workouts = []
+        all_weight_loss = []
         rows = cur.fetchall()
         for row in rows:
             temp_workout = {}
@@ -25,9 +25,9 @@ def get_all_workouts():
             temp_workout['targeted_gender'] = row[7]
             temp_workout['workout_pdf'] = row[8]
             temp_workout['image'] = row[9]
-            all_workouts.append(temp_workout)
+            all_weight_loss.append(temp_workout)
 
-        post_log('GET /Weight_Loss/all')
-        return Response(json.dumps({"Weight_Loss": all_workouts, "code": 201}), mimetype='application/json')
+        post_log('GET /weight_loss/all')
+        return Response(json.dumps({"Weight_Loss": all_weight_loss, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to retrive all weight loss strats.", "ErrorMessage": str(e)}
