@@ -17,7 +17,7 @@ from api.youtube_video import youtube_video
 from api.meal import meal
 from api.calorie_calc import calorie_calc
 from api.curated_workout import curated_workout
-from api.Weight_Loss import Weight_Loss
+from api.weight_loss import Weight_Loss
 
 
 if __name__ == '__main__':
