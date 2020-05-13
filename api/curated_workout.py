@@ -132,3 +132,50 @@ def update_workout_info(wkoutID):
         return Response(json.dumps({"updated": workout, "code": 201}), mimetype='application/json')
     except Exception as e:
         return {"Error": "Unable to update this workout.", "ErrorMessage": str(e)}
+
+
+@curated_workout.route('', methods=['POST'])
+def insert_workout():
+    try:
+        cur = mysql.connection.cursor()
+        id = request.get_json()['id']
+        name = request.get_json()['name']
+        goal = request.get_json()['goal']
+        workout_type = request.get_json()['workout_type']
+        level = request.get_json()['level']
+        days_per_week = request.get_json()['days_per_week']
+        time_per_workout = request.get_json()['time_per_workout']
+        targeted_gender = request.get_json()['targeted_gender']
+        workout_pdf = request.get_json()['workout_pdf']
+        image = request.get_json()['image']
+        
+        cur.execute("INSERT INTO BiteBody.curated_workout (id, name, goal, workout_type, level, days_per_week, time_per_workout, targeted_gender, workout_pdf, image) VALUES ('" 
+            + id + "', '" 
+            + name + "', '" 
+            + goal + "', '" 
+            + workout_type + "', '"
+            + level + "', '"  
+            + days_per_week + "', '"
+            + time_per_workout + "', '"
+            + targeted_gender + "', '"
+            + workout_pdf + "', '" 
+            + image + "');")
+        mysql.connection.commit()
+        workout = { 
+            'id': id,
+            'name': name,
+            'goal': goal,
+            'workout_type' : workout_type,
+            'level': level,
+            'days_per_week': days_per_week,
+            'time_per_workout': time_per_workout,
+            'targeted_gender': targeted_gender,
+            'workout_pdf': workout_pdf,
+            'image': image
+            
+        }
+
+        post_log('POST /curated_workouts')
+        return Response(json.dumps({"curated workout added": workout, "code": 201}), mimetype='application/json')
+    except Exception as e:
+        return {"Error": "Unable to create this workout.", "ErrorMessage":str(e)}
