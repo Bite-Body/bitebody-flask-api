@@ -61,7 +61,7 @@ def update_profile():
             "'WHERE id = "+ id +";")
             mysql.connection.commit()
             return Response(json.dumps({"profile_updated": "successful but with UPDATE", "code": 201}), mimetype='application/json')
-        except:
-            return {"Error": "sir we failed not once, but twice."}
+        except Exception as e:
+            return {"Error": f"sir we failed not once, but twice. Twas the issue: {e}"}
 
         return {"Error": f"Unable to create this profile data. {e}"}
