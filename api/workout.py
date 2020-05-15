@@ -144,7 +144,7 @@ def update_workout_info(wkoutID):
 def insert_workout():
     try:
         cur = mysql.connection.cursor()
-        id = request.get_json()['id']
+        id = str(request.get_json()['id'])
         workout_name = request.get_json()['workout_name']
         main_muscle_group = request.get_json()['main_muscle_group']
         detailed_muscle_group = request.get_json()['detailed_muscle_group']
