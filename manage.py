@@ -18,7 +18,7 @@ from api.meal import meal
 from api.calorie_calc import calorie_calc
 from api.curated_workout import curated_workout
 from api.weight_loss import weight_loss
-
+from api.profile import profile
 
 if __name__ == '__main__':
     app = Flask(__name__)
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     app.register_blueprint(calorie_calc, url_prefix="/calories")
     app.register_blueprint(curated_workout, url_prefix="/curated_workout")
     app.register_blueprint(weight_loss, url_prefix="/weight_loss")
+    app.register_blueprint(profile, url_prefix="/profile")
 
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
