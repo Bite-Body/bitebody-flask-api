@@ -21,7 +21,7 @@ from manage import jwt as jwt
 def get_all_users():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Users;")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.users;")
         all_users = []
         rows = cur.fetchall()
         for row in rows:
@@ -43,7 +43,7 @@ def get_all_users():
 def find_user(userID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Users WHERE id = "+str(userID)+";")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.users WHERE id = "+str(userID)+";")
         row = cur.fetchone()
         user = {
             'first_name':row[1],
@@ -62,13 +62,13 @@ def find_user(userID):
 def delete_user(userID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT id FROM BiteBody.Users Where id = " +str(userID) +  ";")
+        cur.execute("SELECT id FROM heroku_012605fb848c7a7.users Where id = " +str(userID) +  ";")
         row = cur.fetchone()
         foundID = row[0]
         if foundID == None:
             return {"NOT FOUND":"User want to delete doesn't exist"}
         else:
-            cur.execute("DELETE FROM BiteBody.Users WHERE id = " + str(userID) + ";")
+            cur.execute("DELETE FROM heroku_012605fb848c7a7.users WHERE id = " + str(userID) + ";")
             mysql.connection.commit()
             deleted = {
                 'id' : userID
@@ -88,7 +88,7 @@ def update_user_info(userID):
         email = request.get_json()['email']
         password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
         username = request.get_json()['username']
-        cur.execute("UPDATE BiteBody.Users SET first_name = '"+str(first_name) + "',last_name = '" + str(last_name)+ "',email = '"+ str(email)+ "',password = '"+ str(password) + "',username = '"+ str(username) + 
+        cur.execute("UPDATE heroku_012605fb848c7a7.users SET first_name = '"+str(first_name) + "',last_name = '" + str(last_name)+ "',email = '"+ str(email)+ "',password = '"+ str(password) + "',username = '"+ str(username) + 
         "'WHERE id = "+ str(userID)+";")
         mysql.connection.commit()
         updated = {
@@ -115,10 +115,10 @@ def create_user():
         email = request.get_json()['email']
         username = request.get_json()['username']
         
-        cur.execute("SELECT email FROM BiteBody.Users WHERE email = %(email)s", {'email': email})
+        cur.execute("SELECT email FROM heroku_012605fb848c7a7.users WHERE email = %(email)s", {'email': email})
         emailFound = cur.fetchone()
 
-        cur.execute("SELECT email FROM BiteBody.Users WHERE username = %(username)s", {'username': username})
+        cur.execute("SELECT email FROM heroku_012605fb848c7a7.users WHERE username = %(username)s", {'username': username})
         usernameFound = cur.fetchone()
 
 
@@ -188,7 +188,7 @@ def create_user():
                 # TODO: Send email here
             ##END
             
-            # cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) VALUES ('" 
+            # cur.execute("INSERT INTO heroku_012605fb848c7a7.users (first_name, last_name, email, password, username) VALUES ('" 
             #     + first_name + "', '" 
             #     + last_name + "', '" 
             #     + email + "', '" 
@@ -219,7 +219,7 @@ def finalize_user():
         mysql.connection.commit()
         if(cur.fetchone):
         
-            cur.execute("INSERT INTO BiteBody.Users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':confirmation_key})
+            cur.execute("INSERT INTO heroku_012605fb848c7a7.users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':confirmation_key})
             mysql.connection.commit()
             cur.execute("DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
             mysql.connection.commit()
@@ -245,10 +245,10 @@ def login():
         username_or_email = request.get_json()['username_or_email']
         password = request.get_json()['password']
         
-        cur.execute("SELECT * FROM BiteBody.Users where username = %(username)s", {'username': username_or_email})
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.users where username = %(username)s", {'username': username_or_email})
         rv = cur.fetchone()
 
-        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': username_or_email})
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.users where email = %(email)s", {'email': username_or_email})
         rv_email = cur.fetchone()
 
         result = ''
@@ -289,7 +289,7 @@ def forgot_password():
         if '@' not in email:
             return {"Error": "Not a valid email"}
 
-        cur.execute("SELECT * FROM BiteBody.Users where email = %(email)s", {'email': email})
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.users where email = %(email)s", {'email': email})
         email_exists = cur.fetchone()
         if(email_exists):
             port = 465  # For SSL
@@ -300,8 +300,8 @@ def forgot_password():
             password = "tester_account404"
 
             newTempPass = randomPassword()
-            cur.execute("UPDATE BiteBody.Users SET password_reset_key = '"+newTempPass+ "' WHERE email = %(email)s", {'email': email})
-            # cur.execute("INSERT INTO BiteBody.Users (password_reset_key) VALUES ('" 
+            cur.execute("UPDATE heroku_012605fb848c7a7.users SET password_reset_key = '"+newTempPass+ "' WHERE email = %(email)s", {'email': email})
+            # cur.execute("INSERT INTO heroku_012605fb848c7a7.users (password_reset_key) VALUES ('" 
             #     + newTempPass +"');")
             mysql.connection.commit() #necessary for data modification
             message = MIMEMultipart("alternative")
@@ -368,7 +368,7 @@ def reset_password():
         password = request.get_json()['password']
         confirmed_password = request.get_json()['confirmed_password']
         input_reset_key = request.get_json()['reset_key']
-        cur.execute ("SELECT password_reset_key FROM BiteBody.Users WHERE email = %(email)s", {'email': email})
+        cur.execute ("SELECT password_reset_key FROM heroku_012605fb848c7a7.users WHERE email = %(email)s", {'email': email})
         raw_reset_key_in_DB = str(cur.fetchone())
         mod_reset_key_in_DB = raw_reset_key_in_DB
         chars_to_delete = "(',)"
@@ -377,9 +377,9 @@ def reset_password():
         encrypted_password = bcrypt.generate_password_hash(password).decode('utf-8')
         if(mod_reset_key_in_DB == input_reset_key):
             if(password == confirmed_password):
-                cur.execute("UPDATE BiteBody.Users SET password_reset_key = NULL;")
-                cur.execute("UPDATE BiteBody.Users SET password = '"+encrypted_password+ "' WHERE email = %(email)s", {'email': email})
-                #cur.execute("UPDATE BiteBody.Users SET password = '"+password+           "' WHERE (email = '"+str(email)+"');")
+                cur.execute("UPDATE heroku_012605fb848c7a7.users SET password_reset_key = NULL;")
+                cur.execute("UPDATE heroku_012605fb848c7a7.users SET password = '"+encrypted_password+ "' WHERE email = %(email)s", {'email': email})
+                #cur.execute("UPDATE heroku_012605fb848c7a7.users SET password = '"+password+           "' WHERE (email = '"+str(email)+"');")
                 mysql.connection.commit()
                 post_log('POST /reset-password')
                 return {"Allow": "yes"}

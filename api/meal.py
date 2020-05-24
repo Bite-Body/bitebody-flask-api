@@ -10,7 +10,7 @@ from manage import mysql
 def get_all_meals():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Meals;")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.meals;")
         all_meals = []
         rows = cur.fetchall()
         for row in rows:
@@ -34,7 +34,7 @@ def get_all_meals():
 def find_meal(meal_ID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Meals WHERE id = "+str(meal_ID)+";")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.meals WHERE id = "+str(meal_ID)+";")
         row = cur.fetchone()
         meal = {
             'id' : row[0],
@@ -56,7 +56,7 @@ def find_meal(meal_ID):
 def delete_meal(meal_ID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM BiteBody.Meals WHERE id = " + str(meal_ID) + ";")
+        cur.execute("DELETE FROM heroku_012605fb848c7a7.meals WHERE id = " + str(meal_ID) + ";")
         mysql.connection.commit()
         deleted = {
             'id' : meal_ID
@@ -79,7 +79,7 @@ def update_meal_info(meal_ID):
         carbs = request.get_json()['carbs']
         ingredients = request.get_json()['ingredients']
         preptime = request.get_json()['preptime']
-        cur.execute("UPDATE BiteBody.Meals SET meal_name = '"+str(meal_name) + "',calories = '" + str(calories)+ "',protein = '"+ 
+        cur.execute("UPDATE heroku_012605fb848c7a7.meals SET meal_name = '"+str(meal_name) + "',calories = '" + str(calories)+ "',protein = '"+ 
         str(protein)+"',fat = '"+ str(fat) + "',carbs = '" + str(carbs)+"',ingredients = '" + str(ingredients)+"',preptime = '" + str(preptime)+
         "'WHERE id = "+ str(meal_ID)+";")
         mysql.connection.commit()
@@ -111,7 +111,7 @@ def insert_meal():
         carbs = request.get_json()['carbs']
         ingredients = request.get_json()['ingredients']
         preptime = request.get_json()['preptime']
-        cur.execute("INSERT INTO BiteBody.Meals (id, meal_name, calories, protein, fat, carbs, ingredients, preptime) VALUES ('" 
+        cur.execute("INSERT INTO heroku_012605fb848c7a7.meals (id, meal_name, calories, protein, fat, carbs, ingredients, preptime) VALUES ('" 
             + id + "', '" 
             + meal_name + "', '" 
             + calories + "', '" 

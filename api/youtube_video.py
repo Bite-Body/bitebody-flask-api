@@ -10,7 +10,7 @@ from manage import mysql
 def get_all_youtube_videos():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * From BiteBody.Youtube_Videos;")
+        cur.execute("SELECT * From heroku_012605fb848c7a7.youtube_videos;")
         all_youtube_videos = []
         rows = cur.fetchall()
         for row in rows:
@@ -30,7 +30,7 @@ def get_all_youtube_videos():
 def find_Youtube_Videos(videoID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Youtube_Videos WHERE id = "+str(videoID)+";")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.youtube_videos WHERE id = "+str(videoID)+";")
         row = cur.fetchone()
         yt_video = {
             'id' : row[0],
@@ -48,7 +48,7 @@ def find_Youtube_Videos(videoID):
 def delete_youtube_video(videoID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM BiteBody.Youtube_Videos WHERE id = " + str(videoID) + ";")
+        cur.execute("DELETE FROM heroku_012605fb848c7a7.youtube_videos WHERE id = " + str(videoID) + ";")
         mysql.connection.commit()
         deleted = {
             'id' : videoID
@@ -67,7 +67,7 @@ def update_youtube_video(videoID):
         id_collaborator = request.get_json()['id_collaborator']
         video_count = request.get_json()['video_count']
         video_link = request.get_json()['video_link']   
-        cur.execute("UPDATE BiteBody.Youtube_Videos SET id = '"+str(videoID) + "',id_collaborator = '" + str(id_collaborator)+ "',video_count = '"+ 
+        cur.execute("UPDATE heroku_012605fb848c7a7.youtube_videos SET id = '"+str(videoID) + "',id_collaborator = '" + str(id_collaborator)+ "',video_count = '"+ 
         str(video_count)+"',video_link = '" + str(video_link)+
         "'WHERE id = "+ str(videoID)+";")
         mysql.connection.commit()
@@ -91,7 +91,7 @@ def insert_youtube_video():
         id_collaborator = request.get_json()['id_collaborator']
         video_count = request.get_json()['video_count']
         video_link = request.get_json()['video_link']
-        cur.execute("INSERT INTO BiteBody.Youtube_Videos (id, id_collaborator, video_count, video_link) VALUES ('" 
+        cur.execute("INSERT INTO heroku_012605fb848c7a7.youtube_videos (id, id_collaborator, video_count, video_link) VALUES ('" 
             + id + "', '" 
             + id_collaborator + "', '"
             + video_count + "', '" 

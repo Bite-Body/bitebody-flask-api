@@ -10,7 +10,7 @@ from manage import mysql
 def get_all_collabs():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Collaborators;")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.collaborators;")
         all_collabs = []
         rows = cur.fetchall()
         for row in rows:
@@ -28,7 +28,7 @@ def get_all_collabs():
 def find_collaborator(collabID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Collaborators WHERE id = "+str(collabID)+";")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.collaborators WHERE id = "+str(collabID)+";")
         row = cur.fetchone()
         collab = {
             'youtube_link':row[1],
@@ -44,7 +44,7 @@ def find_collaborator(collabID):
 def delete_collab(collabID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM BiteBody.Collaborators WHERE id = " + str(collabID) + ";")
+        cur.execute("DELETE FROM heroku_012605fb848c7a7.collaborators WHERE id = " + str(collabID) + ";")
         mysql.connection.commit()
         deleted = {
             'id' : collabID
@@ -60,7 +60,7 @@ def update_collab_info(collabID):
     try:
         cur = mysql.connection.cursor()
         youtube_link = request.get_json()['youtube_link']
-        cur.execute("UPDATE BiteBody.Collaborators SET youtube_link = '"+str(youtube_link) + 
+        cur.execute("UPDATE heroku_012605fb848c7a7.collaborators SET youtube_link = '"+str(youtube_link) + 
         "'WHERE id = "+ str(collabID)+";")
         mysql.connection.commit()
         updated = {
@@ -88,7 +88,7 @@ def create_collab():
         #if foundID == None:
         #    return {"NOT FOUND":"Can't create Collab if given ID does not exist in USER table"}
         #else:
-        cur.execute("INSERT INTO BiteBody.Collaborators (id, youtube_link) VALUES ('" 
+        cur.execute("INSERT INTO heroku_012605fb848c7a7.collaborators (id, youtube_link) VALUES ('" 
             + id + "', '" 
             + youtube_link + "');")
         mysql.connection.commit()
@@ -105,5 +105,5 @@ def create_collab():
 
 def getMinID():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT max(id) FROM BiteBody.Collaborators;")
+    cur.execute("SELECT max(id) FROM heroku_012605fb848c7a7.collaborators;")
     return cur.fetchone()

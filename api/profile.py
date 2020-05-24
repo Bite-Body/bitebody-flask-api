@@ -10,7 +10,7 @@ from manage import mysql
 def find_profile_data(profileID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.Profile_Data WHERE id = "+str(profileID)+";")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.profile_data WHERE id = "+str(profileID)+";")
         row = cur.fetchone()
         data = {
             'id' : row[0],
@@ -37,7 +37,7 @@ def update_profile():
         nickname = request.get_json()['nickname']
         title = request.get_json()['title']
 
-        cur.execute("INSERT INTO BiteBody.Profile_Data (id, nickname, title, age, bio, gender) VALUES ('" 
+        cur.execute("INSERT INTO heroku_012605fb848c7a7.profile_data (id, nickname, title, age, bio, gender) VALUES ('" 
             + id + "', '" 
             + nickname + "', '"
             + title + "', '" 
@@ -52,7 +52,7 @@ def update_profile():
     except Exception as e:
         try:
         # we finna update if post fails
-            cur.execute("UPDATE BiteBody.Profile_Data SET id = '"+ id + 
+            cur.execute("UPDATE heroku_012605fb848c7a7.profile_data SET id = '"+ id + 
             "',nickname = '" + nickname + 
             "',title = '" + title +
             "',age = '" + age +

@@ -10,7 +10,7 @@ from manage import mysql
 def get_all_weight_loss():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * From BiteBody.Weight_Loss;")
+        cur.execute("SELECT * From heroku_012605fb848c7a7.weight_loss;")
         all_weight_loss = []
         rows = cur.fetchall()
         for row in rows:

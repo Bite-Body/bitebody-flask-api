@@ -10,7 +10,7 @@ from manage import mysql
 def get_all_workouts():
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * From BiteBody.curated_workout;")
+        cur.execute("SELECT * From heroku_012605fb848c7a7.curated_workout;")
         all_workouts = []
         rows = cur.fetchall()
         for row in rows:
@@ -37,7 +37,7 @@ def find_workout_by_type(workout_type):
     try:
         print(workout_type)
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.curated_workout WHERE workout_type = \"" + str(workout_type) + "\";")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.curated_workout WHERE workout_type = \"" + str(workout_type) + "\";")
         all_workouts = []
         rows = cur.fetchall()
         for row in rows:
@@ -62,7 +62,7 @@ def find_workout_by_type(workout_type):
 def find_workout(wkoutID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM BiteBody.curated_workout WHERE id = "+str(wkoutID)+";")
+        cur.execute("SELECT * FROM heroku_012605fb848c7a7.curated_workout WHERE id = "+str(wkoutID)+";")
         row = cur.fetchone()
         workout = {
             'id' : row[0],
@@ -86,7 +86,7 @@ def find_workout(wkoutID):
 def delete_workout(wkoutID):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM BiteBody.curated_workout WHERE id = " + str(wkoutID) + ";")
+        cur.execute("DELETE FROM heroku_012605fb848c7a7.curated_workout WHERE id = " + str(wkoutID) + ";")
         mysql.connection.commit()
         deleted = {
             'id' : wkoutID
@@ -112,7 +112,7 @@ def update_workout_info(wkoutID):
         workout_pdf = request.get_json()['workout_pdf']
         #STOPPED HERE
 
-        cur.execute("UPDATE BiteBody.curated_workout SET name = '"+str(name) + "',goal = '" + str(goal)+ "',workout_type = '"+ 
+        cur.execute("UPDATE heroku_012605fb848c7a7.curated_workout SET name = '"+str(name) + "',goal = '" + str(goal)+ "',workout_type = '"+ 
         str(workout_type)+"',level = '"+ str(level) + "',days_per_week = '" + str(days_per_week)+"',time_per_workout = '" + str(time_per_workout)+"',targeted_gender = '" + str(targeted_gender)+ "',workout_pdf = '" + str(workout_pdf)+ 
         "'WHERE id = "+ str(wkoutID)+";")
         mysql.connection.commit()
@@ -149,7 +149,7 @@ def insert_workout():
         workout_pdf = request.get_json()['workout_pdf']
         image = request.get_json()['image']
         
-        cur.execute("INSERT INTO BiteBody.curated_workout (id, name, goal, workout_type, level, days_per_week, time_per_workout, targeted_gender, workout_pdf, image) VALUES ('" 
+        cur.execute("INSERT INTO heroku_012605fb848c7a7.curated_workout (id, name, goal, workout_type, level, days_per_week, time_per_workout, targeted_gender, workout_pdf, image) VALUES ('" 
             + id + "', '" 
             + name + "', '" 
             + goal + "', '" 
