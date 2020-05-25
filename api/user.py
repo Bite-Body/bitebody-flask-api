@@ -131,7 +131,7 @@ def create_user():
         else:
             password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
 
-            cur.execute("INSERT INTO BiteBody.Accounts_In_Limbo (first_name, last_name, email, password, username) VALUES ('" 
+            cur.execute("INSERT INTO heroku_012605fb848c7a7.accounts_in_limbo (first_name, last_name, email, password, username) VALUES ('" 
                 + first_name + "', '" 
                 + last_name + "', '" 
                 + email + "', '" 
@@ -146,7 +146,7 @@ def create_user():
             conf_key = randomPassword()
 
             ##START
-            cur.execute("UPDATE BiteBody.Accounts_In_Limbo SET confirmation_key = '"+conf_key+ "' WHERE email = %(email)s", {'email': email})
+            cur.execute("UPDATE heroku_012605fb848c7a7.accounts_in_limbo SET confirmation_key = '"+conf_key+ "' WHERE email = %(email)s", {'email': email})
 
             mysql.connection.commit() #necessary for data modification
             message = MIMEMultipart("alternative")
@@ -215,13 +215,13 @@ def finalize_user():
     try:
         cur = mysql.connection.cursor()
         confirmation_key = request.get_json()['confirmation_key']
-        cur.execute ("SELECT * FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
+        cur.execute ("SELECT * FROM heroku_012605fb848c7a7.accounts_in_limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
         mysql.connection.commit()
         if(cur.fetchone):
         
-            cur.execute("INSERT INTO heroku_012605fb848c7a7.users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':confirmation_key})
+            cur.execute("INSERT INTO heroku_012605fb848c7a7.users (first_name, last_name, email, password, username) SELECT first_name, last_name, email, password, username FROM heroku_012605fb848c7a7.accounts_in_limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key':confirmation_key})
             mysql.connection.commit()
-            cur.execute("DELETE FROM BiteBody.Accounts_In_Limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
+            cur.execute("DELETE FROM heroku_012605fb848c7a7.accounts_in_limbo WHERE confirmation_key = %(confirmation_key)s", {'confirmation_key': confirmation_key})
             mysql.connection.commit()
             return {"Allow": "yes"}
         
